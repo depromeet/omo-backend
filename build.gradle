@@ -34,6 +34,12 @@ dependencies {
 	//oauth
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	//maria db
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+
 	//swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
