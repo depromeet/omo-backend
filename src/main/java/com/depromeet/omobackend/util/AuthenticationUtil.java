@@ -26,7 +26,6 @@ public class AuthenticationUtil {
     public User getUser() {
         return userRepository.findByEmail(getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
-        }
     }
 
 }
