@@ -27,4 +27,10 @@ public class UserServiceImpl implements UserService {
         refreshTokenRepository.deleteById(authenticationUtil.getUserEmail());
     }
 
+    @Override
+    public void modifyNickname(String nickname) {
+        User user = authenticationUtil.getUser();
+        user.modifyNickname(nickname);
+    }
+
 }
