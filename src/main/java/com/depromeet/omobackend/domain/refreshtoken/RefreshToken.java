@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
 @Getter
 @NoArgsConstructor
