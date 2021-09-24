@@ -12,15 +12,15 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(BookmarkId.class)
+//@IdClass(BookmarkId.class)
 @Entity
 public class Bookmark {
 
     @Id
     private Long userId;
 
-    @Id
-    private Long omakaseId;
+//    @Id
+//    private Long omakaseId;
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY)
