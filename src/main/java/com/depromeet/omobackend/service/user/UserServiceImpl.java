@@ -7,6 +7,7 @@ import com.depromeet.omobackend.dto.response.ProfileResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
 import com.depromeet.omobackend.exception.UserNotFoundException;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
+import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final StampRepository stampRepository;
 
     private final AuthenticationUtil authenticationUtil;
 
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
         return ProfileResponse.builder()
                 .user(new UserDto(user.getNickname(), user.getProfileImage()))
                 .omakaseCount((long) user.getStamps().size())
-                .omakases(user.getStamps().stream()
+                .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
                 .map(stamp -> {
                     Omakase omakase = stamp.getOmakase();
                     return OmakaseDto.builder()
