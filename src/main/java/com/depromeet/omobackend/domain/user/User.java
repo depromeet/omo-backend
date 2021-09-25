@@ -17,16 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"nickname","email"})})
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     @Size(max = 20)
     @NotNull
     private String nickname;
 
+    @Column(unique = true)
     @NotNull
     private String email;
 
