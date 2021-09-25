@@ -29,7 +29,7 @@ public class UserController {
         userService.modifyNickname(request.getNickname());
     }
 
-    @GetMapping("/user/{email}")
+    @GetMapping("/user")
     public MypageResponse getMyPage(@PathVariable(required = false) String email) {
         return userService.getMyPage(email);
     }

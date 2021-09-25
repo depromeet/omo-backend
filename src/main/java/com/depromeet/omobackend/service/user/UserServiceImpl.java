@@ -44,9 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MypageResponse getMyPage(String email) {
-        User user;
-        if (email == null) user = authenticationUtil.getUser();
-        else user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        User user = authenticationUtil.getUser();
 
         return MypageResponse.builder()
                 .user(
