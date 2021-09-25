@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
@@ -13,5 +14,7 @@ public class UserDto {
     private String nickname;
 
     private String profileImage;
+
+    private Long omakaseCount;
 
 }

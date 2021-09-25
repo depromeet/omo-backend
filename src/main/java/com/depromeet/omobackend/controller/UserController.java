@@ -1,7 +1,7 @@
 package com.depromeet.omobackend.controller;
 
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
-import com.depromeet.omobackend.dto.response.ProfileResponse;
+import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/user/{email}")
-    public ProfileResponse getProfile(@PathVariable(required = false) String email) {
-        return userService.getProfile(email);
+    public MypageResponse getMyPage(@PathVariable(required = false) String email) {
+        return userService.getMyPage(email);
     }
 
 }

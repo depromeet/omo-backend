@@ -3,7 +3,7 @@ package com.depromeet.omobackend.service.user;
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakaseDto;
-import com.depromeet.omobackend.dto.response.ProfileResponse;
+import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
 import com.depromeet.omobackend.exception.UserNotFoundException;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
@@ -43,18 +43,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ProfileResponse getProfile(String email) {
+    public MypageResponse getMyPage(String email) {
         User user;
         if (email == null) user = authenticationUtil.getUser();
         else user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-        return ProfileResponse.builder()
-                .user(new UserDto(user.getNickname(), user.getProfileImage()))
-                .omakaseCount((long) user.getStamps().size())
+        return MypageResponse.builder()
+                .user(
+                        UserDto.builder()
+                        .nickname(user.getNickname())
+                        .profileImage(user.getProfileImage())
+                        .omakaseCount((long) user.getStamps().size())
+                        .build()
+                )
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
-                .map(stamp -> {
-                    Omakase omakase = stamp.getOmakase();
-                    return OmakaseDto.builder()
+                    .map(stamp -> {
+                        Omakase omakase = stamp.getOmakase();
+                        return OmakaseDto.builder()
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())
@@ -63,7 +68,7 @@ public class UserServiceImpl implements UserService {
                                     .createDate(stamp.getCreatedDate())
                                     .isCertified(stamp.getIsCertified())
                                     .build();
-                }).collect(Collectors.toList()))
+                    }).collect(Collectors.toList()))
                 .build();
     }
 

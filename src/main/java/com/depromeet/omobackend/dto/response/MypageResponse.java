@@ -11,11 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileResponse {
+public class MypageResponse {
 
     private UserDto user;
-
-    private Long omakaseCount;
 
     private List<OmakaseDto> omakases;
 
