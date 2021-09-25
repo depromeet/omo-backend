@@ -2,6 +2,7 @@ package com.depromeet.omobackend.domain.user;
 
 import com.depromeet.omobackend.domain.bookmark.Bookmark;
 import com.depromeet.omobackend.domain.stamp.Stamp;
+import com.depromeet.omobackend.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,14 +49,19 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarks;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Builder
-    public User(String nickname, String email, String description, String profileImage) {
+    public User(String nickname, String email, String description, String profileImage, Role role) {
         this.nickname = nickname;
         this.email = email;
         this.description = description;
         this.profileImage = profileImage;
         this.isActivated = true;
         this.createdDate = LocalDateTime.now();
+        this.role = role;
     }
 
     public void modifyNickname(String nickname) {
@@ -72,4 +78,18 @@ public class User {
         this.isActivated = false;
     }
 
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+
+    public User update(String nickname, String email, String profileImage) {
+        this.nickname = nickname;
+        this.email = email;
+        this.profileImage = profileImage;
+        return this;
+    }
+
+    public static UserDto toDto(User user) {
+        return new UserDto(user);
+    }
 }

@@ -1,58 +1,107 @@
 package com.depromeet.omobackend.security.auth;
 
-import com.depromeet.omobackend.domain.user.User;
-import com.depromeet.omobackend.repository.user.UserRepository;
-import com.depromeet.omobackend.security.auth.dto.OAuthAttributes;
-import com.depromeet.omobackend.security.auth.dto.SessionUser;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.depromeet.omobackend.security.auth.dto.OAuth2UserAttribute;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
-/**
- * OAuthAttributes을 기반으로 가입 및 정보 수정, 세션 저장 등 기능 수행
- */
-@RequiredArgsConstructor
-@Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
+    private static final Logger logger = LogManager.getLogger(CustomOAuth2UserService.class);
+
+    private static final String MISSING_USER_INFO_ERROR_CODE = "missing_redirect_uri_access_code";
+
+    @Autowired
+    private OAuth2UserAttribute oauth2UserAttribute;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2UserService delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
-                .getUserInfoEndpoint().getUserNameAttributeName();
+        String clientRegistrationId = userRequest.getClientRegistration().getRegistrationId();
+        String resourceServerUri = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
+        String accessToken = userRequest.getAccessToken().getTokenValue();
+        OAuth2User user = null;
 
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        User user = saveOrUpdate(attributes);
+        //사용자 정보 중 사용자 아이디로 삼을 key
+        String userNameAttributeName = OAuth2UserAttribute.USER_ID;
 
-        httpSession.setAttribute("user", new SessionUser(user));
 
-        return new DefaultOAuth2User(Collections.singleton(
-                new SimpleGrantedAuthority(user.getRoleKey()),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey()));
-    }
+        Map<String, Object> attributes = null;
 
-    private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-        .orElse(attributes.toEntity());
+        if (resourceServerUri != null && !"".equals(resourceServerUri)
+                && accessToken != null && !"".equals(accessToken)) {
 
-        return userRepository.save(user);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.set("Authorization", "Bearer " + accessToken);
+
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
+
+            try {
+
+                // 리소스 서버에게 사용자 정보 요청
+                String response = restTemplate.postForObject(resourceServerUri, request, String.class);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug(response);
+                }
+
+                attributes = oauth2UserAttribute.getOAuth2UserAttributes(clientRegistrationId, response);
+
+            } catch (OAuth2AuthorizationException ex) {
+                OAuth2Error oauth2Error = ex.getError();
+                throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString(), ex);
+
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            user = new DefaultOAuth2User(authorities, attributes, userNameAttributeName);
+
+        } else {
+            OAuth2Error oauth2Error = new OAuth2Error(MISSING_USER_INFO_ERROR_CODE,
+                    "Missing required redirect uri or access token for Client Registration: "
+                            + userRequest.getClientRegistration().getRegistrationId(),
+                    null);
+            throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
+        }
+
+        return user;
+
     }
 }
