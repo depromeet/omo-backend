@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,17 +22,18 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 20)
     @NotNull
+    @Column(length = 8, nullable = false)
     private String nickname;
 
     @NotNull
+    @Column(length = 45, nullable = false)
     private String email;
 
     private String description;
 
     @NotNull
-    private Boolean isActivated;
+    private boolean isActivated;
 
     private String profileImage;
 
