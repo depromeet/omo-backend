@@ -19,6 +19,8 @@ public class OmakaseSearchResultDto {
 
     private String imageUrl;
 
+    private String level;
+
     private String description;
 
 }
