@@ -1,7 +1,5 @@
 package com.depromeet.omobackend.domain.bookmark;
 
-import com.depromeet.omobackend.domain.omakase.Omakase;
-import com.depromeet.omobackend.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +11,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookmarkId implements Serializable {
-
     @Id
-    private Long userId;
-
+    private Long user;
     @Id
-    private Long omakaseId;
-
-
+    private Long omakase;
 }
