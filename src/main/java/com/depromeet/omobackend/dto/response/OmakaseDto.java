@@ -19,8 +19,6 @@ public class OmakaseDto {
 
     private String photoUrl;
 
-    private String category;
-
     private String country;
 
     private LocalDateTime createDate;

@@ -61,10 +61,9 @@ public class UserServiceImpl implements UserService {
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())
-                                    .category(omakase.getCategory().toString())
                                     .country(omakase.getCountry())
                                     .createDate(stamp.getCreatedDate())
-                                    .isCertified(stamp.getIsCertified())
+                                    .isCertified(stamp.isCertified())
                                     .build();
                     }).collect(Collectors.toList()))
                 .build();
