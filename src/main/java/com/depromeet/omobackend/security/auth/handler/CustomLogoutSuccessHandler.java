@@ -17,6 +17,10 @@ import java.io.IOException;
 @Component
 public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
+    public static final String TEST_PAGE = "test-page.entry";
+    public static final String JWT_TOKEN_NAME = "jwt.token-name";
+    public static final String JWT_TOKEN_NAME1 = "jwt.token-name";
+    public static final String FLAG = "-flag";
     @Autowired
     private Environment env;
 
@@ -27,9 +31,9 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-        String frontendAppEntryPage = env.getProperty("test-page.entry");
-        response.addCookie(cookieUtils.generateRemoveJwtCookie(env.getProperty("jwt.token-name"), ""));
-        response.addCookie(cookieUtils.generateRemoveJwtCookie(env.getProperty("jwt.token-name") + "-flag", ""));
+        String frontendAppEntryPage = env.getProperty(TEST_PAGE);
+        response.addCookie(cookieUtils.generateRemoveJwtCookie(env.getProperty(JWT_TOKEN_NAME), ""));
+        response.addCookie(cookieUtils.generateRemoveJwtCookie(env.getProperty(JWT_TOKEN_NAME1) + FLAG, ""));
         getRedirectStrategy().sendRedirect(request, response, frontendAppEntryPage);
 
     }

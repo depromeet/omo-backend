@@ -18,7 +18,9 @@ import java.io.IOException;
 
 @Component
 public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
-
+    public static final String TEST_PAGE_ENTRY = "test-page.entry";
+    public static final String JWT_TOKEN_NAME = "jwt.token-name";
+    public static final String JWT_EXPIRE_TIME = "jwt.expire-time";
     private static final Logger logger = LogManager.getLogger(CustomOAuth2SuccessHandler.class);
 
     @Autowired
@@ -37,10 +39,10 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         if (logger.isDebugEnabled()) {
             logger.debug(authentication.getPrincipal());
         }
-        String frontendAppEntryPage = env.getProperty("test-page.entry");
+        String frontendAppEntryPage = env.getProperty(TEST_PAGE_ENTRY);
         String jwt = jwtUtils.generateToken((DefaultOAuth2User) authentication.getPrincipal());
-        response.addCookie(cookieUtils.generateJwtHttpOnlyCookie(env.getProperty("jwt.token-name"), jwt, Integer.valueOf(env.getProperty("jwt.expire-time")).intValue()));
-        response.addCookie(cookieUtils.generateNormalCookie(env.getProperty("jwt.token-name") + "-flag", "true", Integer.valueOf(env.getProperty("jwt.expire-time")).intValue()));
+        response.addCookie(cookieUtils.generateJwtHttpOnlyCookie(env.getProperty(JWT_TOKEN_NAME), jwt, Integer.valueOf(env.getProperty(JWT_EXPIRE_TIME)).intValue()));
+        response.addCookie(cookieUtils.generateNormalCookie(env.getProperty(JWT_TOKEN_NAME) + "-flag", "true", Integer.valueOf(env.getProperty(JWT_EXPIRE_TIME)).intValue()));
 
         if (response.isCommitted()) {
             return;
