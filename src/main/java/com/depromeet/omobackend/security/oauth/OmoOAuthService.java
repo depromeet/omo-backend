@@ -36,18 +36,17 @@ public class OmoOAuthService implements OAuth2UserService<OAuth2UserRequest, OAu
                 , attributes.getAttributes()
                 , attributes.getNameAttributeKey());
     }
-    private User save(OAuthAttributes attributes) {
+    private void save(OAuthAttributes attributes) {
         String email = attributes.getEmail();
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isPresent()) return optionalUser.get();
-        else {
+        if (!optionalUser.isPresent()) {
             User user = User.builder()
                     .nickname("a")
                     .email(email)
                     .description(null)
                     .profileImage(null)
                     .build();
-            return userRepository.save(user);
+            userRepository.save(user);
         }
     }
 }
