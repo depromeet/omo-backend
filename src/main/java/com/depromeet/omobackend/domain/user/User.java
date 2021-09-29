@@ -18,14 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"nickname","email"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 20)
-    @NotNull
+//    @NotNull
     private String nickname;
 
     @NotNull
@@ -33,12 +33,12 @@ public class User {
 
     private String description;
 
-    @NotNull
+//    @NotNull
     private Boolean isActivated;
 
     private String profileImage;
 
-    @NotNull
+//    @NotNull
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -50,7 +50,7 @@ public class User {
     private List<Bookmark> bookmarks;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Role role;
 
     @Builder
@@ -82,10 +82,8 @@ public class User {
         return this.role.getKey();
     }
 
-    public User update(String nickname, String email, String profileImage) {
-        this.nickname = nickname;
+    public User update(String email) {
         this.email = email;
-        this.profileImage = profileImage;
         return this;
     }
 

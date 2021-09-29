@@ -11,17 +11,15 @@ import java.security.Principal;
 
 @Controller
 public class LoginController {
-    @Deprecated
-    @RequestMapping(value="/main.do")
-    public String mainPage(HttpServletRequest req, HttpServletResponse resp, OAuth2AuthenticationToken auth, Principal principal) {
 
+    @RequestMapping(value="/main")
+    public String mainPage(HttpServletRequest req, HttpServletResponse resp, OAuth2AuthenticationToken auth, Principal principal) {
         return "main.html";
     }
 
     // 로그인 페이지
     @GetMapping(value="/oauth2Login")
     public String loginPage() {
-
         return "index.html";
     }
 }

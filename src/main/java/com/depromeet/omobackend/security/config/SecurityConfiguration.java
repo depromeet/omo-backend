@@ -1,11 +1,10 @@
 package com.depromeet.omobackend.security.config;
 
-import com.depromeet.omobackend.security.auth.CustomOAuth2UserService;
-import com.depromeet.omobackend.security.auth.handler.CustomOAuth2SuccessHandler;
+import com.depromeet.omobackend.security.auth.OmoOAuth2UserService;
 import com.depromeet.omobackend.security.auth.handler.CustomLogoutSuccessHandler;
+import com.depromeet.omobackend.security.auth.handler.CustomOAuth2SuccessHandler;
 import com.depromeet.omobackend.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,23 +15,16 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    public static final String JSESSIONID = "JSESSIONID";
 
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/static/", "classpath:/public/"};
-
-    @Autowired
-    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
-
-    @Autowired
-    private CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,42 +34,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                        .antMatchers("/", "/oauth2Login", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-                        .antMatchers("/index.html").permitAll()
-                        .antMatchers("/static/**").permitAll()
-                        .antMatchers("/main.do").permitAll()
+                        .antMatchers("/", "/oauth2Login", "/main", "/static/**", "/v2/api-docs",
+                                "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
-                .and()
-                .logout().logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
                     .loginPage("/oauth2Login")
                     .redirectionEndpoint()
-                    .baseUri("/oauth2/callback/*")
+                    .baseUri("/oauth2/code/*") // callback URL: http://localhost:8080/oauth2/code/naver
                 .and()
                     .userInfoEndpoint()
-                    .userService(customOAuth2UserService())
+                    .userService(omoOAuth2UserService())
                 .and()
                     .successHandler(customOAuth2SuccessHandler)
                 .and()
                     .logout()
-                    .deleteCookies("JSESSIONID")
+                    .deleteCookies(JSESSIONID)
                 .logoutSuccessHandler(customLogoutSuccessHandler)
-
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*");
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 
     @Bean
@@ -86,8 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
-        return new CustomOAuth2UserService();
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> omoOAuth2UserService() {
+        return new OmoOAuth2UserService();
     }
-
 }
