@@ -1,9 +1,7 @@
 package com.depromeet.omobackend.util;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtils {
@@ -22,8 +21,6 @@ public class JwtUtils {
     @Autowired
     Environment env;
 
-
-    //토큰 유효성 검사
     public Boolean isValidateToken(String token) {
         try {
 
@@ -35,7 +32,6 @@ public class JwtUtils {
         }
     }
 
-    // 토큰 만료 검사
     public boolean isTokenExpired(String token) {
         try {
             long exp = (Long) getBobyFromToken(token).get("exp");
@@ -48,9 +44,7 @@ public class JwtUtils {
         }
     }
 
-    // 토큰 발급
     public <T> String generateToken(T userDetails) {
-
         if (logger.isDebugEnabled()) {
             logger.debug(userDetails);
         }
@@ -58,19 +52,14 @@ public class JwtUtils {
         Map<String,Object> claim = new HashMap<>();
 
         if (userDetails instanceof DefaultOAuth2User) {
-
             claim.put("iss", env.getProperty("jwt.toekn-issuer"));  // 발급자
             claim.put("sub",  ((DefaultOAuth2User) userDetails).getName()); // subject 인증 대상(고유 ID)
-
             claim.put("email", ((DefaultOAuth2User) userDetails).getAttributes().get("userEmail"));
-            claim.put("nickname", ((DefaultOAuth2User) userDetails).getAttributes().get("userName"));
-
         }
         String secret = env.getProperty("jwt.secret");
         int exp = Integer.valueOf(env.getProperty("jwt.expire-time"));
-
         claim.put("iat", new Date(System.currentTimeMillis()));
-        claim.put("exp", new Date(System.currentTimeMillis() + (1000 * exp))); // 최대값은 쿠키 만료시간을 고려?
+        claim.put("exp", new Date(System.currentTimeMillis() + (1000 * exp)));
 
         return Jwts.builder()
                 .setClaims(claim)

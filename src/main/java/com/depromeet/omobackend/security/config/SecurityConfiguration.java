@@ -1,6 +1,6 @@
 package com.depromeet.omobackend.security.config;
 
-import com.depromeet.omobackend.security.auth.OmoOAuth2UserService;
+import com.depromeet.omobackend.security.auth.OmoOAuth2Service;
 import com.depromeet.omobackend.security.auth.handler.CustomLogoutSuccessHandler;
 import com.depromeet.omobackend.security.auth.handler.CustomOAuth2SuccessHandler;
 import com.depromeet.omobackend.security.jwt.JwtAuthenticationFilter;
@@ -22,7 +22,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public static final String JSESSIONID = "JSESSIONID";
-
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
@@ -34,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                        .antMatchers("/", "/oauth2Login", "/main", "/static/**", "/v2/api-docs",
+                        .antMatchers("/oauth2Login", "/api/**", "/static/**", "/v2/api-docs",
                                 "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 .and()
@@ -62,6 +61,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> omoOAuth2UserService() {
-        return new OmoOAuth2UserService();
+        return new OmoOAuth2Service();
     }
 }

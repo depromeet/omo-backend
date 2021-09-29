@@ -4,7 +4,6 @@ import com.depromeet.omobackend.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -27,12 +26,9 @@ public class UserDto {
         this.description = description;
         this.isActivated = isActivated;
         this.profileImage = profileImage;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-    }
-
-    public UserDto(User source) {
-        BeanUtils.copyProperties(source, this);
+        this.isActivated = true;
+        this.createdDate = LocalDateTime.now();
+        this.modifiedDate = LocalDateTime.now();
     }
 
     public User toEntity() {

@@ -2,7 +2,6 @@ package com.depromeet.omobackend.domain.user;
 
 import com.depromeet.omobackend.domain.bookmark.Bookmark;
 import com.depromeet.omobackend.domain.stamp.Stamp;
-import com.depromeet.omobackend.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,14 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"nickname","email"})})
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 20)
-//    @NotNull
+    @NotNull
     private String nickname;
 
     @NotNull
@@ -33,12 +32,12 @@ public class User {
 
     private String description;
 
-//    @NotNull
+    @NotNull
     private Boolean isActivated;
 
     private String profileImage;
 
-//    @NotNull
+    @NotNull
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -50,7 +49,7 @@ public class User {
     private List<Bookmark> bookmarks;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Role role;
 
     @Builder
@@ -82,12 +81,4 @@ public class User {
         return this.role.getKey();
     }
 
-    public User update(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public static UserDto toDto(User user) {
-        return new UserDto(user);
-    }
 }
