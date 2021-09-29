@@ -38,7 +38,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .id(omakase.getId())
                 .name(omakase.getName())
                 .country(omakase.getCountry())
-                .level(omakase.getLevel().toString())
+                .level(omakase.getLevel().getName())
                 .description(omakase.getDescription())
                 .imageUrl(omakase.getPhotoUrl())
                 .build();
