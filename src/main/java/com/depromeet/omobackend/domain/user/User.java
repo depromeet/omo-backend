@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,19 +21,17 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    @Size(max = 20)
-    @NotNull
+    @Column(length = 8, nullable = false, unique = true)
     private String nickname;
 
-    @Column(unique = true)
     @NotNull
+    @Column(length = 45, nullable = false, unique = true)
     private String email;
 
     private String description;
 
     @NotNull
-    private Boolean isActivated;
+    private boolean isActivated;
 
     private String profileImage;
 
@@ -59,9 +56,11 @@ public class User {
         this.createdDate = LocalDateTime.now();
     }
 
-    public void modifyNickname(String nickname) {
+    public User modifyNickname(String nickname) {
         this.nickname = nickname;
         this.modifiedDate = LocalDateTime.now();
+
+        return this;
     }
 
     public void modifyDescription(String description) {
