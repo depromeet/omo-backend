@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,23 +16,22 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"nickname","email"})})
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 20)
-    @NotNull
+    @Column(length = 8, nullable = false, unique = true)
     private String nickname;
 
     @NotNull
+    @Column(length = 45, nullable = false, unique = true)
     private String email;
 
     private String description;
 
     @NotNull
-    private Boolean isActivated;
+    private boolean isActivated;
 
     private String profileImage;
 
@@ -63,9 +61,11 @@ public class User {
         this.role = role;
     }
 
-    public void modifyNickname(String nickname) {
+    public User modifyNickname(String nickname) {
         this.nickname = nickname;
         this.modifiedDate = LocalDateTime.now();
+
+        return this;
     }
 
     public void modifyDescription(String description) {

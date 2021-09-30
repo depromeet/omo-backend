@@ -23,7 +23,7 @@ public class Stamp {
     private LocalDateTime createdDate;
 
     @NotNull
-    private Boolean isCertified;
+    private boolean isCertified;
 
     @NotNull
     private String fileUrl;
