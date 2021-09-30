@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyNickname(String nickname) {
         User user = authenticationUtil.getUser();
-        user.modifyNickname(nickname);
+        userRepository.save(user.modifyNickname(nickname));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
                         UserDto.builder()
                         .nickname(user.getNickname())
                         .profileImage(user.getProfileImage())
-                        .omakaseCount((long) user.getStamps().size())
+                        .stampCount(stampRepository.countAllByUserAndCertifiedTrue(user))
                         .build()
                 )
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()

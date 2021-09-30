@@ -15,6 +15,6 @@ public class UserDto {
 
     private String profileImage;
 
-    private Long omakaseCount;
+    private Long stampCount;
 
 }

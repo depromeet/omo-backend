@@ -56,9 +56,11 @@ public class User {
         this.createdDate = LocalDateTime.now();
     }
 
-    public void modifyNickname(String nickname) {
+    public User modifyNickname(String nickname) {
         this.nickname = nickname;
         this.modifiedDate = LocalDateTime.now();
+
+        return this;
     }
 
     public void modifyDescription(String description) {

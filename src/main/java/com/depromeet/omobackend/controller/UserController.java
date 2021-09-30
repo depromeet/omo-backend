@@ -4,6 +4,7 @@ import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class UserController {
         userService.logout();
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/user")
     public void modifyNickname(@RequestBody @Valid ModifyNicknameRequest request) {
         userService.modifyNickname(request.getNickname());
