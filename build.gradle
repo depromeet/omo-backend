@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.depromeet'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '1.8'
 
 configurations {
 	compileOnly {
@@ -43,6 +43,9 @@ dependencies {
 	//swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+	// mustache
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 
 	//test
 	implementation 'com.h2database:h2'
