@@ -14,7 +14,7 @@ public class OmakaseController {
     private final OmakaseService omakaseService;
 
     @GetMapping("/search")
-    public OmakaseSearchResultResponse searchOmakase(@RequestParam String keyword) {
+    public OmakaseSearchResultResponse searchOmakase(@RequestParam(defaultValue = "%") String keyword) {
         return omakaseService.searchOmakase(keyword);
     }
 

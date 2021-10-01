@@ -29,11 +29,11 @@ public class OmakaseServiceImpl implements OmakaseService {
         authenticationUtil.getUser();
         return OmakaseSearchResultResponse.builder()
                 .nameSearch(
-                        omakaseRepository.findAllByNameLikeOrderByName(keyword).stream()
+                        omakaseRepository.findAllByNameLikeOrderByName("%"+keyword+"%").stream()
                                 .map(this::omakaseSearchResult).collect(Collectors.toList())
                 )
                 .countrySearch(
-                        omakaseRepository.findAllByCountryLikeOrderByName(keyword).stream()
+                        omakaseRepository.findAllByCountryLikeOrderByName("%"+keyword+"%").stream()
                                 .map(this::omakaseSearchResult).collect(Collectors.toList())
                 )
                 .build();
