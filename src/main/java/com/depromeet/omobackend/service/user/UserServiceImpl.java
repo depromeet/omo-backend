@@ -5,6 +5,7 @@ import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
+import com.depromeet.omobackend.exception.UserNotAuthenticatedException;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
@@ -32,7 +33,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout() {
-        refreshTokenRepository.deleteById(authenticationUtil.getUserEmail());
+        try{
+            refreshTokenRepository.deleteAllByEmail(authenticationUtil.getUserEmail());
+        } catch(Exception e) {
+            throw new UserNotAuthenticatedException();
+        }
     }
 
     @Override
