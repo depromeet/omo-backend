@@ -2,10 +2,9 @@ package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
-import com.depromeet.omobackend.dto.response.OmakaseDto;
+import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
-import com.depromeet.omobackend.exception.UserNotFoundException;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
                     .map(stamp -> {
                         Omakase omakase = stamp.getOmakase();
-                        return OmakaseDto.builder()
+                        return OmakasesDto.builder()
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())

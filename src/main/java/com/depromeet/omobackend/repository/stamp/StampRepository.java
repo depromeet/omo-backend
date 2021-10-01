@@ -9,4 +9,5 @@ import java.util.List;
 public interface StampRepository extends CrudRepository<Stamp, Long> {
     Long  countAllByUserAndCertifiedTrue(User user);
     List<Stamp> findByUserOrderByCreatedDateDesc(User user);
+    List<Stamp> findAllByUserAndCertifiedTrueOrderByCreatedDate(User user);
 }
