@@ -50,6 +50,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .name(omakase.getName())
                 .description(omakase.getDescription())
                 .address(omakase.getAddress())
+                .level(omakase.getLevel().getName())
                 .country(omakase.getCountry())
                 .phoneNumber(omakase.getPhoneNumber())
                 .openTime(omakase.getOpenTime().toString())
