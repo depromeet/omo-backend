@@ -5,6 +5,7 @@ import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
+import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
 import com.depromeet.omobackend.exception.UserNotAuthenticatedException;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
@@ -42,6 +43,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyNickname(String nickname) {
+        userRepository.findByNickname(nickname)
+                .ifPresent(user -> {
+                    throw new UserNicknameAlreadyExistsException();
+                });
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
     }
