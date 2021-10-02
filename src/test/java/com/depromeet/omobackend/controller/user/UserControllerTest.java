@@ -39,11 +39,10 @@ public class UserControllerTest {
                 .email(email)
                 .build();
 
-        String url = "http://localhost:8080/api/user";
+        String url = "http://localhost:8080/user";
 
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, userDto, Long.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
         List<User> userList = (List<User>) userRepository.findAll();
         assertThat(userList.get(0).getNickname()).isEqualTo(nickname);
