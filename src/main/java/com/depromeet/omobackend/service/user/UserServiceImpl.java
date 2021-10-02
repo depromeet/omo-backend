@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
                 .user(
                         UserDto.builder()
                         .nickname(user.getNickname())
-                        .profileImage(user.getProfileImage())
+                        .profileUrl(user.getProfileImage())
                         .stampCount(stampRepository.countAllByUserAndCertifiedTrue(user))
                         .build()
                 )
