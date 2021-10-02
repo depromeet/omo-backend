@@ -7,18 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping("/omakase")
+@RequestMapping
 @RestController
 public class OmakaseController {
 
     private final OmakaseService omakaseService;
 
-    @GetMapping("/search")
+    @GetMapping("/omakases")
     public OmakaseSearchResultResponse searchOmakase(@RequestParam(defaultValue = "%") String keyword) {
         return omakaseService.searchOmakase(keyword);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/omakase/{id}")
     public OmakaseDetailsResponse getOmakase(@PathVariable long id) {
         return omakaseService.getOmakase(id);
     }
