@@ -13,6 +13,7 @@ import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -21,12 +22,18 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final StampRepository stampRepository;
 
+    private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
     @Override
+    @Transactional
+    public User saveAccount(com.depromeet.omobackend.dto.user.UserDto userDto) {
+        return userRepository.save(userDto.toEntity());
+    }
+
+    @Override
+    @Transactional
     public void deleteAccount() {
         User user = authenticationUtil.getUser();
         userRepository.delete(user);
@@ -52,6 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MypageResponse getMyPage(String email) {
         User user = authenticationUtil.getUser();
 
