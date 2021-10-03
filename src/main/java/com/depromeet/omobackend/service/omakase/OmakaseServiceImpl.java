@@ -55,7 +55,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .phoneNumber(omakase.getPhoneNumber())
                 .openTime(omakase.getOpenTime().toString())
                 .closeTime(omakase.getCloseTime().toString())
-                .stamps(stampRepository.findAllByUserAndCertifiedTrueOrderByCreatedDate(user).stream()
+                .stamps(stampRepository.findAllByUserAndIsCertifiedTrueOrderByCreatedDate(user).stream()
                     .map(stamp -> new StampsDto(stamp.getId(), stamp.getCreatedDate())).collect(Collectors.toList())
                 )
                 .build();

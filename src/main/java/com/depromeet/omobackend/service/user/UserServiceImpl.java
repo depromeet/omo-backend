@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final RefreshTokenRepository refreshTokenRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
                         UserDto.builder()
                         .nickname(user.getNickname())
                         .profileUrl(user.getProfileImage())
-                        .stampCount(stampRepository.countAllByUserAndCertifiedTrue(user))
+                        .stampCount((long) stampRepository.findAllByUserAndIsCertifiedTrue(user).size())
                         .build()
                 )
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
                                     .photoUrl(omakase.getPhotoUrl())
                                     .country(omakase.getCountry())
                                     .createDate(stamp.getCreatedDate())
-                                    .isCertified(stamp.isCertified())
+                                    .isCertified(stamp.getIsCertified())
                                     .build();
                     }).collect(Collectors.toList()))
                 .build();

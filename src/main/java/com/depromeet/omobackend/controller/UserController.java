@@ -27,6 +27,11 @@ public class UserController {
         return userService.saveAccount(userDto);
     }
 
+    @DeleteMapping("/logout")
+    public void logout() {
+        userService.logout();
+    }
+
     @DeleteMapping("/user")
     public void deleteAccount() {
         userService.deleteAccount();

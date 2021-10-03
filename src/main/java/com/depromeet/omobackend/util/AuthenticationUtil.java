@@ -25,7 +25,7 @@ public class AuthenticationUtil {
 
     public User getUser() {
         return userRepository.findByEmail(getUserEmail())
-                .filter(User::getIsActivated)
+                .filter(User::isActivated)
                 .orElseThrow(UserNotFoundException::new);
     }
 
