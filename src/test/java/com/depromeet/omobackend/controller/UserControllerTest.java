@@ -1,4 +1,4 @@
-package com.depromeet.omobackend.controller.user;
+package com.depromeet.omobackend.controller;
 
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.user.UserDto;
