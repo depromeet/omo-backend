@@ -12,7 +12,7 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @GetMapping(value="/oauth2Login")
+    @GetMapping(value="/login")
     public String loginPage() {
         return "loginTest.html";
     }

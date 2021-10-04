@@ -33,12 +33,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                        .antMatchers("/oauth2Login", "/api/**", "/static/**", "/v2/api-docs",
+                        .antMatchers("/login", "/api/**", "/static/**", "/v2/api-docs",
                                 "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 .and()
                     .oauth2Login()
-                    .loginPage("/oauth2Login")
+                    .loginPage("/login")
                     .redirectionEndpoint()
                     .baseUri("/oauth2/code/*") // callback URL: http://localhost:8080/oauth2/code/naver
                 .and()
