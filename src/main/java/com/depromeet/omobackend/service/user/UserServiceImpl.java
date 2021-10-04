@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                         UserDto.builder()
                         .nickname(user.getNickname())
                         .profileImage(user.getProfileImage())
-                        .stampCount(stampRepository.countAllByUserAndCertifiedTrue(user))
+                        .stampCount(stampRepository.countAllByUserAndIsCertifiedTrue(user))
                         .build()
                 )
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
