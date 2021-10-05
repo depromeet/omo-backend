@@ -13,7 +13,7 @@ public class UserDto {
 
     private String nickname;
 
-    private String profileImage;
+    private String profileUrl;
 
     private Long stampCount;
 

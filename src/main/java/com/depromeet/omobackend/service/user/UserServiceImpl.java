@@ -2,9 +2,12 @@ package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
+import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
-import com.depromeet.omobackend.dto.response.OmakaseDto;
 import com.depromeet.omobackend.dto.response.UserDto;
+import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
+import com.depromeet.omobackend.exception.UserNotAuthenticatedException;
+import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final RefreshTokenRepository refreshTokenRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
@@ -37,8 +40,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    public void logout() {
+        try{
+            refreshTokenRepository.deleteAllByEmail(authenticationUtil.getUserEmail());
+        } catch(Exception e) {
+            throw new UserNotAuthenticatedException();
+        }
+    }
+
+    @Override
     public void modifyNickname(String nickname) {
+        userRepository.findByNickname(nickname)
+                .ifPresent(user -> {
+                    throw new UserNicknameAlreadyExistsException();
+                });
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
     }
@@ -52,20 +67,20 @@ public class UserServiceImpl implements UserService {
                 .user(
                         UserDto.builder()
                         .nickname(user.getNickname())
-                        .profileImage(user.getProfileImage())
-                        .stampCount(stampRepository.countAllByUserAndIsCertifiedTrue(user))
+                        .profileUrl(user.getProfileImage())
+                        .stampCount((long) stampRepository.findAllByUserAndIsCertifiedTrue(user).size())
                         .build()
                 )
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
                     .map(stamp -> {
                         Omakase omakase = stamp.getOmakase();
-                        return OmakaseDto.builder()
+                        return OmakasesDto.builder()
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())
                                     .country(omakase.getCountry())
                                     .createDate(stamp.getCreatedDate())
-                                    .isCertified(stamp.isCertified())
+                                    .isCertified(stamp.getIsCertified())
                                     .build();
                     }).collect(Collectors.toList()))
                 .build();

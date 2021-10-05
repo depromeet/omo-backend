@@ -15,6 +15,6 @@ public class MypageResponse {
 
     private UserDto user;
 
-    private List<OmakaseDto> omakases;
+    private List<OmakasesDto> omakases;
 
 }
