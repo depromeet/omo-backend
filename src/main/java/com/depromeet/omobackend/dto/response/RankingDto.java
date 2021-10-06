@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RankingDto {
-    private Long rank;
+    private Long ranking;
     private String nickname;
     private Long stampCount;
 }
