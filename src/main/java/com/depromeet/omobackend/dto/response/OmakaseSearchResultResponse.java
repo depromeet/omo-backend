@@ -15,6 +15,6 @@ public class OmakaseSearchResultResponse {
 
     private List<OmakaseSearchResultDto> nameSearch;
 
-    private List<OmakaseSearchResultDto> countrySearch;
+    private List<OmakaseSearchResultDto> countySearch;
 
 }

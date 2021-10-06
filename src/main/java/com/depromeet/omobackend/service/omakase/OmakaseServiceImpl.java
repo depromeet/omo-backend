@@ -32,8 +32,8 @@ public class OmakaseServiceImpl implements OmakaseService {
                         omakaseRepository.findAllByNameLikeOrderByName("%"+keyword+"%").stream()
                                 .map(this::omakaseSearchResult).collect(Collectors.toList())
                 )
-                .countrySearch(
-                        omakaseRepository.findAllByCountryLikeOrderByName("%"+keyword+"%").stream()
+                .countySearch(
+                        omakaseRepository.findAllByCountyLikeOrderByName("%"+keyword+"%").stream()
                                 .map(this::omakaseSearchResult).collect(Collectors.toList())
                 )
                 .build();
@@ -51,7 +51,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .description(omakase.getDescription())
                 .address(omakase.getAddress())
                 .level(omakase.getLevel().getName())
-                .country(omakase.getCountry())
+                .county(omakase.getCounty())
                 .phoneNumber(omakase.getPhoneNumber())
                 .openTime(omakase.getOpenTime().toString())
                 .closeTime(omakase.getCloseTime().toString())
@@ -65,7 +65,7 @@ public class OmakaseServiceImpl implements OmakaseService {
         return OmakaseSearchResultDto.builder()
                 .id(omakase.getId())
                 .name(omakase.getName())
-                .country(omakase.getCountry())
+                .county(omakase.getCounty())
                 .level(omakase.getLevel().getName())
                 .description(omakase.getDescription())
                 .imageUrl(omakase.getPhotoUrl())
