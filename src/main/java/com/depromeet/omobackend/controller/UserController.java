@@ -1,13 +1,18 @@
 package com.depromeet.omobackend.controller;
 
+
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.user.UserDto;
 import com.depromeet.omobackend.service.user.UserService;
+import com.depromeet.omobackend.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
@@ -23,8 +28,19 @@ public class UserController {
     }
 
     @PostMapping(value = "/user")
-    public User save(@RequestBody UserDto userDto) {
-        return userService.saveAccount(userDto);
+    public RedirectView save(UserDto userDto, @RequestParam("image") MultipartFile multipartFile) {
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        userDto.setProfileImage(fileName);
+
+        User savedUser = userService.saveAccount(userDto);
+
+        String uploadDir = "/user-photos/" + savedUser.getId();
+
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+        return new RedirectView("/users", true);
+
     }
 
     @DeleteMapping("/logout")
