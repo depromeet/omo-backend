@@ -15,7 +15,7 @@ public class OmakaseSearchResultDto {
 
     private String name;
 
-    private String country;
+    private String county;
 
     private String imageUrl;
 

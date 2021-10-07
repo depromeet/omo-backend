@@ -19,7 +19,7 @@ public class OmakasesDto {
 
     private String photoUrl;
 
-    private String country;
+    private String county;
 
     private LocalDateTime createDate;
 

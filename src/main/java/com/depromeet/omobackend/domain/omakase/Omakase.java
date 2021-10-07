@@ -29,7 +29,7 @@ public class Omakase {
     private String address;
 
     @Column(length = 10, nullable = false)
-    private String country;
+    private String county;
 
     @Column(length = 11)
     private String phoneNumber;
@@ -64,10 +64,10 @@ public class Omakase {
     private Location location;
 
     @Builder
-    public Omakase(String name, String address, String country, String phoneNumber, String photoUrl, String description, Level level, Category category, Time openTime, Time closeTime, Holiday holiday, List<Stamp> stamps, List<Bookmark> bookmarks, Location location) {
+    public Omakase(String name, String address, String county, String phoneNumber, String photoUrl, String description, Level level, Category category, Time openTime, Time closeTime, Holiday holiday, List<Stamp> stamps, List<Bookmark> bookmarks, Location location) {
         this.name = name;
         this.address = address;
-        this.country = country;
+        this.county = county;
         this.phoneNumber = phoneNumber;
         this.photoUrl = photoUrl;
         this.description = description;

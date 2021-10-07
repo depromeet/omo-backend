@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface OmakaseRepository extends CrudRepository<Omakase, Long> {
-    List<Omakase> findAllByCountryLikeOrderByName(String country);
+    List<Omakase> findAllByCountyLikeOrderByName(String county);
     List<Omakase> findAllByNameLikeOrderByName(String name);
 }
