@@ -21,7 +21,7 @@ public class RankingController {
     }
 
     @GetMapping(path = "/rankers")
-    public List<RankingDto> getRankers(@RequestParam(defaultValue = "10") Long limit){
+    public List<RankingDto> getRankers(@RequestParam(defaultValue = "10") int limit){
         return rankingService.getRankers(limit);
     }
 
