@@ -6,19 +6,25 @@ import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.user.UserDto;
 import com.depromeet.omobackend.service.user.UserService;
-import com.depromeet.omobackend.util.FileUploadUtil;
+import com.depromeet.omobackend.util.ProfileUploadUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
 public class UserController {
+
+    @Value("${profile.upload.directory}")
+    private String profileUploadPath;
 
     private final UserService userService;
 
@@ -28,19 +34,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/user")
-    public RedirectView save(UserDto userDto, @RequestParam("image") MultipartFile multipartFile) {
+    public void save(@ModelAttribute(name = "user") UserDto user, HttpServletResponse response,
+                     @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        userDto.setProfileImage(fileName);
+        user.setProfileImage(fileName);
+        User savedUser = userService.saveAccount(user);
+        String uploadDir = profileUploadPath + savedUser.getId();
 
-        User savedUser = userService.saveAccount(userDto);
-
-        String uploadDir = "/user-photos/" + savedUser.getId();
-
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-
-        return new RedirectView("/users", true);
-
+        ProfileUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
     }
 
     @DeleteMapping("/logout")
@@ -57,5 +59,13 @@ public class UserController {
     @PatchMapping("/user")
     public void modifyNickname(@RequestBody @Valid ModifyNicknameRequest request) {
         userService.modifyNickname(request.getNickname());
+    }
+
+    // TODO: 화면 테스트를 위해 추가. 추후 삭제 예정
+    @GetMapping("/profile")
+    public ModelAndView getTestPage() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("profileTest.html");
+        return mv;
     }
 }
