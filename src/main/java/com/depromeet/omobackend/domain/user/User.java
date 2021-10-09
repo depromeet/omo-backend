@@ -1,6 +1,6 @@
 package com.depromeet.omobackend.domain.user;
 
-import com.depromeet.omobackend.domain.bookmark.Bookmark;
+import com.depromeet.omobackend.domain.recommendation.Recommendation;
 import com.depromeet.omobackend.domain.stamp.Stamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,7 +44,7 @@ public class User {
     private List<Stamp> stamps;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Bookmark> bookmarks;
+    private List<Recommendation> recommendations;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

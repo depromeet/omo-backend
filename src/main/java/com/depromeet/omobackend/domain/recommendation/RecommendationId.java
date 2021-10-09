@@ -1,4 +1,4 @@
-package com.depromeet.omobackend.domain.bookmark;
+package com.depromeet.omobackend.domain.recommendation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookmarkId implements Serializable {
+public class RecommendationId implements Serializable {
     @Id
     private Long user;
     @Id
