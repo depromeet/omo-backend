@@ -24,21 +24,21 @@ public class User {
     @Column(length = 8, nullable = false, unique = true)
     private String nickname;
 
-    @NotNull
     @Column(length = 45, nullable = false, unique = true)
     private String email;
 
-    private String description;
+    @Column(nullable = false)
+    private Boolean isActivated;
 
-    @NotNull
-    private boolean isActivated;
+    @Column(nullable = false)
+    private String profileUrl;
 
-    private String profileImage;
-
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    private LocalDateTime modifiedDate;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 5, nullable = false)
+    private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Stamp> stamps;
@@ -46,16 +46,11 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Recommendation> recommendations;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
     @Builder
-    public User(String nickname, String email, String description, String profileImage, Role role) {
+    public User(String nickname, String email, String profileUrl, Role role) {
         this.nickname = nickname;
         this.email = email;
-        this.description = description;
-        this.profileImage = profileImage;
+        this.profileUrl = profileUrl;
         this.isActivated = true;
         this.createdDate = LocalDateTime.now();
         this.role = role;
@@ -63,14 +58,7 @@ public class User {
 
     public User modifyNickname(String nickname) {
         this.nickname = nickname;
-        this.modifiedDate = LocalDateTime.now();
-
         return this;
-    }
-
-    public void modifyDescription(String description) {
-        this.description = description;
-        this.modifiedDate = LocalDateTime.now();
     }
 
     public void isNotActivated() {

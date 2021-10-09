@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.sql.Time;
 import java.util.List;
 
 @Getter
@@ -40,15 +38,17 @@ public class Omakase {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 6)
+    @Column(length = 7, nullable = false)
     private Level level;
 
-    @Size(max = 20)
     @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
     private Category category;
 
+    @Column(length = 100, nullable = false)
     private String priceInformation;
 
+    @Column(length = 100, nullable = false)
     private String businessHours;
 
     @Column(columnDefinition = "enum('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')")
