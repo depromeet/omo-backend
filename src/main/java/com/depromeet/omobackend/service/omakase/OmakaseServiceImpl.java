@@ -29,9 +29,9 @@ public class OmakaseServiceImpl implements OmakaseService {
     @Override
     public OmakaseSearchResultResponse searchOmakase(String level, String keyword) {
         authenticationUtil.getUser();
-        List<OmakaseSearchResultDto> nameSearch = omakaseRepository.findAllByLevelAndNameLikeOrderByStampsDescName(Level.valueOf(level), "%"+keyword+"%").stream()
+        List<OmakaseSearchResultDto> nameSearch = omakaseRepository.findAllByLevelAndNameLikeOrderByRecommendationsDescName(Level.valueOf(level), "%"+keyword+"%").stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
-        List<OmakaseSearchResultDto> countySearch = omakaseRepository.findAllByLevelAndCountyLikeOrderByStampsDescName(Level.valueOf(level),"%"+keyword+"%").stream()
+        List<OmakaseSearchResultDto> countySearch = omakaseRepository.findAllByLevelAndCountyLikeOrderByRecommendationsDescName(Level.valueOf(level),"%"+keyword+"%").stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
 
         return OmakaseSearchResultResponse.builder()

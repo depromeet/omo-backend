@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface OmakaseRepository extends CrudRepository<Omakase, Long> {
-    List<Omakase> findAllByLevelAndCountyLikeOrderByStampsDescName(Level level, String county);
-    List<Omakase> findAllByLevelAndNameLikeOrderByStampsDescName(Level level, String name);
+    List<Omakase> findAllByLevelAndCountyLikeOrderByRecommendationsDescName(Level level, String county);
+    List<Omakase> findAllByLevelAndNameLikeOrderByRecommendationsDescName(Level level, String name);
 }
