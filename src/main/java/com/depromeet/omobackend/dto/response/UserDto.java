@@ -15,6 +15,8 @@ public class UserDto {
 
     private String profileUrl;
 
-    private Long stampCount;
+    private Integer stampCount;
+
+    private Integer power;
 
 }
