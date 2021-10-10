@@ -14,6 +14,7 @@ import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,15 +29,15 @@ public class OmakaseServiceImpl implements OmakaseService {
     @Override
     public OmakaseSearchResultResponse searchOmakase(String level, String keyword) {
         authenticationUtil.getUser();
+        List<OmakaseSearchResultDto> nameSearch = omakaseRepository.findAllByLevelAndNameLikeOrderByStampsDescName(Level.valueOf(level), "%"+keyword+"%").stream()
+                .map(this::omakaseSearchResult).collect(Collectors.toList());
+        List<OmakaseSearchResultDto> countySearch = omakaseRepository.findAllByLevelAndCountyLikeOrderByStampsDescName(Level.valueOf(level),"%"+keyword+"%").stream()
+                .map(this::omakaseSearchResult).collect(Collectors.toList());
+
         return OmakaseSearchResultResponse.builder()
-                .nameSearch(
-                        omakaseRepository.findAllByLevelAndNameLikeOrderByStampsDescName(Level.valueOf(level), "%"+keyword+"%").stream()
-                                .map(this::omakaseSearchResult).collect(Collectors.toList())
-                )
-                .countySearch(
-                        omakaseRepository.findAllByLevelAndCountyLikeOrderByStampsDescName(Level.valueOf(level),"%"+keyword+"%").stream()
-                                .map(this::omakaseSearchResult).collect(Collectors.toList())
-                )
+                .nameSearch(nameSearch)
+                .countySearch(countySearch)
+                .totalElements(nameSearch.size() + countySearch.size())
                 .build();
     }
 
