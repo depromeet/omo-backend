@@ -21,6 +21,6 @@ public class OmakaseSearchResultDto {
 
     private String level;
 
-    private String description;
+    private String address;
 
 }

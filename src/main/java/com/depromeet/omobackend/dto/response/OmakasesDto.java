@@ -19,8 +19,6 @@ public class OmakasesDto {
 
     private String photoUrl;
 
-    private String county;
-
     private LocalDateTime createDate;
 
     private Boolean isCertified;

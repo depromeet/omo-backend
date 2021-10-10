@@ -1,5 +1,6 @@
 package com.depromeet.omobackend.service.omakase;
 
+import com.depromeet.omobackend.domain.omakase.Level;
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakaseDetailsResponse;
@@ -25,15 +26,15 @@ public class OmakaseServiceImpl implements OmakaseService {
     private final AuthenticationUtil authenticationUtil;
 
     @Override
-    public OmakaseSearchResultResponse searchOmakase(String keyword) {
+    public OmakaseSearchResultResponse searchOmakase(String level, String keyword) {
         authenticationUtil.getUser();
         return OmakaseSearchResultResponse.builder()
                 .nameSearch(
-                        omakaseRepository.findAllByNameLikeOrderByName("%"+keyword+"%").stream()
+                        omakaseRepository.findAllByLevelAndNameLikeOrderByStampsDescName(Level.valueOf(level), "%"+keyword+"%").stream()
                                 .map(this::omakaseSearchResult).collect(Collectors.toList())
                 )
                 .countySearch(
-                        omakaseRepository.findAllByCountyLikeOrderByName("%"+keyword+"%").stream()
+                        omakaseRepository.findAllByLevelAndCountyLikeOrderByStampsDescName(Level.valueOf(level),"%"+keyword+"%").stream()
                                 .map(this::omakaseSearchResult).collect(Collectors.toList())
                 )
                 .build();
@@ -65,8 +66,8 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .id(omakase.getId())
                 .name(omakase.getName())
                 .county(omakase.getCounty())
+                .address(omakase.getAddress())
                 .level(omakase.getLevel().getName())
-                .description(omakase.getDescription())
                 .imageUrl(omakase.getPhotoUrl())
                 .build();
     }
