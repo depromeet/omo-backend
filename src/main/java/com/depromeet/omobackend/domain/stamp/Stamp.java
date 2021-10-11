@@ -19,13 +19,13 @@ public class Stamp {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    @NotNull
+    @Column(nullable = false)
     private Boolean isCertified;
 
-    @NotNull
+    @Column(nullable = false)
     private String fileUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

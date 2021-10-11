@@ -1,8 +1,7 @@
 package com.depromeet.omobackend.domain.omakase;
 
-import com.depromeet.omobackend.domain.bookmark.Bookmark;
+import com.depromeet.omobackend.domain.recommendation.Recommendation;
 import com.depromeet.omobackend.domain.location.Location;
-import com.depromeet.omobackend.domain.menu.Menu;
 import com.depromeet.omobackend.domain.stamp.Stamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.sql.Time;
 import java.util.List;
 
 @Getter
@@ -23,25 +20,36 @@ public class Omakase {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 45, nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String address;
 
-    private String city;
+    @Column(length = 10, nullable = false)
+    private String county;
 
-    private String country;
-
+    @Column(length = 11)
     private String phoneNumber;
 
     private String photoUrl;
 
-    @Size(max = 20)
+    @Column(nullable = false)
+    private String description;
+
     @Enumerated(EnumType.STRING)
+    @Column(length = 7, nullable = false)
+    private Level level;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
     private Category category;
 
-    private Time openTime;
+    @Column(length = 100, nullable = false)
+    private String priceInformation;
 
-    private Time closeTime;
+    @Column(length = 100, nullable = false)
+    private String businessHours;
 
     @Column(columnDefinition = "enum('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')")
     private Holiday holiday;
@@ -50,25 +58,27 @@ public class Omakase {
     private List<Stamp> stamps;
 
     @OneToMany(mappedBy = "omakase", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Bookmark> bookmarks;
-
-    @OneToMany(mappedBy = "omakase", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Menu> menus;
+    private List<Recommendation> recommendations;
 
     @OneToOne(mappedBy = "omakase", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Location location;
 
     @Builder
-    public Omakase(String name, String address, String city, String country, String phoneNumber, String photoUrl, Category category, Time openTime, Time closeTime, Holiday holiday) {
+    public Omakase(String name, String address, String county, String phoneNumber, String photoUrl, String description, Level level, Category category, String priceInformation, String businessHours, Holiday holiday, List<Stamp> stamps, List<Recommendation> recommendations, Location location) {
         this.name = name;
         this.address = address;
-        this.city = city;
-        this.country = country;
+        this.county = county;
         this.phoneNumber = phoneNumber;
         this.photoUrl = photoUrl;
+        this.description = description;
+        this.level = level;
+        this.priceInformation = priceInformation;
+        this.businessHours = businessHours;
         this.category = category;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
         this.holiday = holiday;
+        this.stamps = stamps;
+        this.recommendations = recommendations;
+        this.location = location;
     }
+
 }

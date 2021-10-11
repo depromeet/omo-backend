@@ -1,6 +1,6 @@
 package com.depromeet.omobackend.domain.user;
 
-import com.depromeet.omobackend.domain.bookmark.Bookmark;
+import com.depromeet.omobackend.domain.recommendation.Recommendation;
 import com.depromeet.omobackend.domain.stamp.Stamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,55 +21,52 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    @Size(max = 20)
-    @NotNull
+    @Column(length = 8, nullable = false, unique = true)
     private String nickname;
 
-    @Column(unique = true)
-    @NotNull
+    @Column(length = 45, nullable = false, unique = true)
     private String email;
 
-    private String description;
-
-    @NotNull
+    @Column(nullable = false)
     private Boolean isActivated;
 
-    private String profileImage;
+    @Column(nullable = false)
+    private String profileUrl;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    private LocalDateTime modifiedDate;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 5, nullable = false)
+    private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Stamp> stamps;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Bookmark> bookmarks;
+    private List<Recommendation> recommendations;
 
     @Builder
-    public User(String nickname, String email, String description, String profileImage) {
+    public User(String nickname, String email, String profileUrl, Role role) {
         this.nickname = nickname;
         this.email = email;
-        this.description = description;
-        this.profileImage = profileImage;
+        this.profileUrl = profileUrl;
         this.isActivated = true;
         this.createdDate = LocalDateTime.now();
+        this.role = role;
     }
 
-    public void modifyNickname(String nickname) {
+    public User modifyNickname(String nickname) {
         this.nickname = nickname;
-        this.modifiedDate = LocalDateTime.now();
-    }
-
-    public void modifyDescription(String description) {
-        this.description = description;
-        this.modifiedDate = LocalDateTime.now();
+        return this;
     }
 
     public void isNotActivated() {
         this.isActivated = false;
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 
 }

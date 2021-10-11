@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
 import org.springframework.data.annotation.Id;
@@ -19,5 +20,8 @@ public class RefreshToken {
 
     @Indexed
     private String refreshToken;
+
+    @TimeToLive
+    private long refreshExp;
 
 }

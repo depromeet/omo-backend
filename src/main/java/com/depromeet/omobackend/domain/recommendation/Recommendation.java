@@ -1,4 +1,4 @@
-package com.depromeet.omobackend.domain.bookmark;
+package com.depromeet.omobackend.domain.recommendation;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
@@ -10,9 +10,10 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@IdClass(BookmarkId.class)
+@IdClass(RecommendationId.class)
 @Entity
-public class Bookmark {
+public class Recommendation {
+
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -24,8 +25,9 @@ public class Bookmark {
     private Omakase omakase;
 
     @Builder
-    public Bookmark(User user, Omakase omakase) {
+    public Recommendation(User user, Omakase omakase) {
         this.user = user;
         this.omakase = omakase;
     }
+
 }
