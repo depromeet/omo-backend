@@ -2,6 +2,7 @@ package com.depromeet.omobackend.service.omakase;
 
 import com.depromeet.omobackend.domain.omakase.Level;
 import com.depromeet.omobackend.domain.omakase.Omakase;
+import com.depromeet.omobackend.domain.recommendation.Recommendation;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakaseDetailsResponse;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultDto;
@@ -9,12 +10,14 @@ import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
 import com.depromeet.omobackend.dto.response.StampsDto;
 import com.depromeet.omobackend.exception.OmakaseNotFoundException;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
+import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class OmakaseServiceImpl implements OmakaseService {
 
     private final OmakaseRepository omakaseRepository;
     private final StampRepository stampRepository;
+    private final RecommendationRepository recommendationRepository;
 
     private final AuthenticationUtil authenticationUtil;
 
@@ -56,6 +60,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .phoneNumber(omakase.getPhoneNumber())
                 .priceInformation(omakase.getPriceInformation())
                 .businessHours(omakase.getBusinessHours())
+                .isRecommendation(recommendationRepository.findByUserAndOmakase(user, omakase).isPresent())
                 .stamps(stampRepository.findAllByUserAndIsCertifiedTrueOrderByCreatedDate(user).stream()
                     .map(stamp -> new StampsDto(stamp.getId(), stamp.getCreatedDate())).collect(Collectors.toList())
                 )
