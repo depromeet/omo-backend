@@ -10,4 +10,5 @@ import java.util.Optional;
 
 public interface RecommendationRepository extends CrudRepository<Recommendation, RecommendationId> {
     Optional<Recommendation> findByUserAndOmakase(User user, Omakase omakase);
+    void delete(Optional<Recommendation> recommendation);
 }
