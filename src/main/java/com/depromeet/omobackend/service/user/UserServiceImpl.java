@@ -1,6 +1,7 @@
 package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
+import com.depromeet.omobackend.domain.stamp.Stamp;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
@@ -62,28 +63,42 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public MypageResponse getMyPage(String email) {
         User user = authenticationUtil.getUser();
+        Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
 
         return MypageResponse.builder()
                 .user(
                         UserDto.builder()
                         .nickname(user.getNickname())
-                        .profileUrl(user.getProfileImage())
-                        .stampCount((long) stampRepository.findAllByUserAndIsCertifiedTrue(user).size())
+                        .profileUrl(user.getProfileUrl())
+                        .stampCount(stampCount)
+                        .power(getPower(stampCount))
                         .build()
                 )
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
                     .map(stamp -> {
                         Omakase omakase = stamp.getOmakase();
+                        Stamp recentlyStamp = stampRepository.findFirstByOmakaseOrderByCreatedDateDesc(omakase)
+                                .orElse(null);
                         return OmakasesDto.builder()
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())
-                                    .county(omakase.getCounty())
-                                    .createDate(stamp.getCreatedDate())
-                                    .isCertified(stamp.getIsCertified())
+                                    .createDate(recentlyStamp == null ? null : recentlyStamp.getCreatedDate())
+                                    .isCertified(recentlyStamp == null ? null : recentlyStamp.getIsCertified())
                                     .build();
                     }).collect(Collectors.toList()))
                 .build();
+    }
+
+    // 변동 가능
+    private Integer getPower(Integer stampCount) {
+        if (stampCount < 16) {
+            return 1;
+        } else if(stampCount < 31) {
+            return 2;
+        } else {
+            return 3;
+        }
     }
 
 }

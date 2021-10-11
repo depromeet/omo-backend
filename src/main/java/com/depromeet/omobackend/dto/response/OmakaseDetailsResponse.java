@@ -23,13 +23,11 @@ public class OmakaseDetailsResponse {
 
     private String county;
 
-    private String level;
-
     private String phoneNumber;
 
-    private String openTime;
+    private String priceInformation;
 
-    private String closeTime;
+    private String businessHours;
 
     private List<StampsDto> stamps;
 
