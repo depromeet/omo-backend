@@ -31,12 +31,12 @@ public class UserDto {
         this.modifiedDate = LocalDateTime.now();
     }
 
-    public User toEntity() {
-        return User.builder()
-                .nickname(nickname)
-                .email(email)
-                .description(description)
-                .profileImage(profileImage)
-                .build();
-    }
+//    public User toEntity() {
+//        return User.builder()
+//                .nickname(nickname)
+//                .email(email)
+//                .description(description)
+//                .profileImage(profileImage)
+//                .build();
+//    }
 }

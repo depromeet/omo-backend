@@ -36,6 +36,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         writer.write(token);
         writer.flush();
 
-        refreshTokenRepository.save(new RefreshToken(email, refresh));
+//        refreshTokenRepository.save(new RefreshToken(email, refresh));
     }
 }

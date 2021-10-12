@@ -1,5 +1,6 @@
 package com.depromeet.omobackend.security.oauth;
 
+import com.depromeet.omobackend.exception.InvalidOAuthException;
 import lombok.Getter;
 
 import java.util.Map;
@@ -16,34 +17,15 @@ public class OAuthAttributes {
         this.email = email;
     }
 
-    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if (registrationId.equals("kakao")) {
-            return ofKakao(userNameAttributeName, attributes);
-        } else if (registrationId.equals("naver")) {
-            return ofNaver(userNameAttributeName,attributes);
+    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) throws InvalidOAuthException {
+        if (registrationId.equals("kakao") || registrationId.equals("naver")) {
+            Map<String, Object> response = (Map<String, Object>) attributes.get("id");
+
+            return new OAuthAttributes(attributes,
+                    userNameAttributeName,
+                    (String) response.get("email"));
+        } else {
+            throw new InvalidOAuthException();
         }
-        return ofGoogle(userNameAttributeName, attributes);
-    }
-
-    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
-
-        return new OAuthAttributes(attributes,
-                userNameAttributeName,
-                (String) kakao_account.get("email"));
-    }
-
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-
-        return new OAuthAttributes(attributes,
-                userNameAttributeName,
-                (String) response.get("email"));
-    }
-
-    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-        return new OAuthAttributes(attributes,
-                userNameAttributeName,
-                (String) attributes.get("email"));
     }
 }

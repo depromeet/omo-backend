@@ -17,9 +17,6 @@ import java.util.Optional;
 
 @Service
 public class OmoOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
@@ -30,23 +27,8 @@ public class OmoOAuthService implements OAuth2UserService<OAuth2UserRequest, OAu
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        save(attributes);
-
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
                 , attributes.getAttributes()
                 , attributes.getNameAttributeKey());
-    }
-    private void save(OAuthAttributes attributes) {
-        String email = attributes.getEmail();
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (!optionalUser.isPresent()) {
-            User user = User.builder()
-                    .nickname("a")
-                    .email(email)
-                    .description(null)
-                    .profileImage(null)
-                    .build();
-            userRepository.save(user);
-        }
     }
 }

@@ -1,15 +1,14 @@
 package com.depromeet.omobackend.security.config;
 
+import com.depromeet.omobackend.security.oauth.OAuth2SuccessHandler;
+import com.depromeet.omobackend.security.oauth.OmoOAuthService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @RequiredArgsConstructor
 @Configuration
@@ -37,15 +36,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 //                    .failureHandler()
                     .permitAll()
         ;
-    }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
-
-    @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> omoOAuth2UserService() {
-        return new OmoOAuth2Service();
     }
 }

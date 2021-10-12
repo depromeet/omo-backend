@@ -1,7 +1,8 @@
-package com.depromeet.omobackend.security.auth;
+package com.depromeet.omobackend.security.oauth;
 
 import com.depromeet.omobackend.exception.UserNotFoundException;
 import com.depromeet.omobackend.repository.user.UserRepository;
+import com.depromeet.omobackend.security.oauth.AuthDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
