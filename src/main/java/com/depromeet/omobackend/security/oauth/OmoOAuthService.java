@@ -1,8 +1,5 @@
 package com.depromeet.omobackend.security.oauth;
 
-import com.depromeet.omobackend.domain.user.User;
-import com.depromeet.omobackend.repository.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,7 +10,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Service
 public class OmoOAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
