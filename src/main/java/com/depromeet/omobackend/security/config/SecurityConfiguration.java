@@ -33,7 +33,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .userService(omoOauthService)
                     .and()
                     .successHandler(oAuth2SuccessHandler)
-//                    .failureHandler()
                     .permitAll()
         ;
     }
