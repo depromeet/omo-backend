@@ -2,7 +2,7 @@ package com.depromeet.omobackend.security.jwt;
 
 import com.depromeet.omobackend.exception.InvalidTokenException;
 import com.depromeet.omobackend.exception.TokenTypeNotRefreshException;
-import com.depromeet.omobackend.security.oauth.AuthDetailsService;
+import com.depromeet.omobackend.security.auth.AuthDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

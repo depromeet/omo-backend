@@ -1,4 +1,4 @@
-package com.depromeet.omobackend.security.oauth;
+package com.depromeet.omobackend.security.auth;
 
 import com.depromeet.omobackend.domain.user.User;
 import lombok.AllArgsConstructor;
