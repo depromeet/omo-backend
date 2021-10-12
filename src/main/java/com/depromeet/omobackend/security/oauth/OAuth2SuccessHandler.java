@@ -1,10 +1,13 @@
 package com.depromeet.omobackend.security.oauth;
 
+import com.depromeet.omobackend.domain.refreshtoken.RefreshToken;
 import com.depromeet.omobackend.dto.response.OAuthSuccessResponse;
+import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.security.jwt.JwtTokenProvider;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -18,8 +21,12 @@ import java.io.PrintWriter;
 @RequiredArgsConstructor
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
+    @Value("${jwt.exp.refresh}")
+    private Long refreshExp;
+
     JwtTokenProvider jwtTokenProvider;
     UserRepository userRepository;
+    RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -40,6 +47,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .access(access)
                     .refresh(refresh)
                     .build();
+
+           refreshTokenRepository.save(new RefreshToken(email, refresh, refreshExp*60));
         }
         else {
             oAuthSuccessResponse = OAuthSuccessResponse.builder()
