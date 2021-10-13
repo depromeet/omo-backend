@@ -24,9 +24,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     @Value("${jwt.exp.refresh}")
     private Long refreshExp;
 
-    JwtTokenProvider jwtTokenProvider;
-    UserRepository userRepository;
-    RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
