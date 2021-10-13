@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OmakaseDetailsResponse {
 
+    private Boolean isRecommendation;
+
     private String imageUrl;
 
     private String name;
