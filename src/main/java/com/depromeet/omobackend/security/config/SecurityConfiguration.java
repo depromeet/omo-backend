@@ -3,7 +3,6 @@ package com.depromeet.omobackend.security.config;
 import com.depromeet.omobackend.security.oauth.OAuth2SuccessHandler;
 import com.depromeet.omobackend.security.oauth.OmoOAuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,10 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-    @Autowired
-    private OmoOAuthService omoOauthService;
-    @Autowired
-    private OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OmoOAuthService omoOauthService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
