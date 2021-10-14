@@ -20,7 +20,7 @@ public class UserDto {
 
     @Builder
     public UserDto(String nickname, String email, String description, boolean isActivated,
-                   String profileImage, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+                   String profileImage) {
         this.nickname = nickname;
         this.email = email;
         this.description = description;
@@ -35,8 +35,7 @@ public class UserDto {
         return User.builder()
                 .nickname(nickname)
                 .email(email)
-                .description(description)
-                .profileImage(profileImage)
+                .profileUrl(profileImage)
                 .build();
     }
 }
