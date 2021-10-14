@@ -1,9 +1,7 @@
 package com.depromeet.omobackend.controller;
 
-import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.response.MypageResponse;
-import com.depromeet.omobackend.dto.user.UserDto;
 import com.depromeet.omobackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,10 +20,10 @@ public class UserController {
         return userService.getMyPage(email);
     }
 
-    @PostMapping(value = "/user")
-    public User save(@RequestBody UserDto userDto) {
-        return userService.saveAccount(userDto);
-    }
+//    @PostMapping(value = "/user")
+//    public User save(@RequestBody UserDto userDto) {
+//        return userService.saveAccount(userDto);
+//    }
 
     @DeleteMapping("/logout")
     public void logout() {

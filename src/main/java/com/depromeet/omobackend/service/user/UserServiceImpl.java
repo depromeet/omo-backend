@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService {
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
-    @Override
-    @Transactional
-    public User saveAccount(com.depromeet.omobackend.dto.user.UserDto userDto) {
-        return userRepository.save(userDto.toEntity());
-    }
+//    @Override
+//    @Transactional
+//    public User saveAccount(com.depromeet.omobackend.dto.user.UserDto userDto) {
+//        return userRepository.save(userDto.toEntity());
+//    }
 
     @Override
     @Transactional
