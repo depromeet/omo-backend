@@ -47,6 +47,9 @@ dependencies {
 	// mustache
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 
+	// serialize & deserialize
+	implementation 'com.google.code.gson:gson:2.8.5'
+
 	//test
 	implementation 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
