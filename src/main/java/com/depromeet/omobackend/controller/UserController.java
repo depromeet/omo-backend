@@ -36,11 +36,6 @@ public class UserController {
 //        ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
 //    }
 
-    @DeleteMapping("/logout")
-    public void logout() {
-        userService.logout();
-    }
-
     @DeleteMapping("/user")
     public void deleteAccount() {
         userService.deleteAccount();

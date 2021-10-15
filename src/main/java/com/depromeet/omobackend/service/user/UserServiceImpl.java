@@ -7,8 +7,6 @@ import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
-import com.depromeet.omobackend.exception.UserNotAuthenticatedException;
-import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
@@ -23,7 +21,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
@@ -38,15 +35,6 @@ public class UserServiceImpl implements UserService {
     public void deleteAccount() {
         User user = authenticationUtil.getUser();
         userRepository.delete(user);
-    }
-
-    @Override
-    public void logout() {
-        try{
-            refreshTokenRepository.deleteAllByEmail(authenticationUtil.getUserEmail());
-        } catch(Exception e) {
-            throw new UserNotAuthenticatedException();
-        }
     }
 
     @Override
