@@ -14,8 +14,10 @@ public class OmakaseController {
     private final OmakaseService omakaseService;
 
     @GetMapping("/omakases")
-    public OmakaseSearchResultResponse searchOmakase(@RequestParam(defaultValue = "%") String keyword) {
-        return omakaseService.searchOmakase(keyword);
+    public OmakaseSearchResultResponse searchOmakase(
+            @RequestParam(defaultValue = "MIDDLE") String level,
+            @RequestParam(defaultValue = "%") String keyword) {
+        return omakaseService.searchOmakase(level, keyword);
     }
 
     @GetMapping("/omakase/{id}")

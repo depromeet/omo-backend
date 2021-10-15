@@ -1,6 +1,5 @@
 package com.depromeet.omobackend.controller;
 
-
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.response.MypageResponse;
@@ -59,13 +58,5 @@ public class UserController {
     @PatchMapping("/user")
     public void modifyNickname(@RequestBody @Valid ModifyNicknameRequest request) {
         userService.modifyNickname(request.getNickname());
-    }
-
-    // TODO: 화면 테스트를 위해 추가. 추후 삭제 예정
-    @GetMapping("/profile")
-    public ModelAndView getTestPage() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("profileTest.html");
-        return mv;
     }
 }

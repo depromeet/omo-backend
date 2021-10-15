@@ -9,18 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OmakaseSearchResultDto {
+public class OAuthSuccessResponse {
+    private String status;
+    private String email;
 
-    private Long id;
-
-    private String name;
-
-    private String county;
-
-    private String imageUrl;
-
-    private String level;
-
-    private String address;
-
+    private String access;
+    private String refresh;
 }

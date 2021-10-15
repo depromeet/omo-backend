@@ -9,18 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OmakaseSearchResultDto {
-
-    private Long id;
-
-    private String name;
-
-    private String county;
-
-    private String imageUrl;
-
-    private String level;
-
-    private String address;
-
+public class RankingDto {
+    private Long ranking;
+    private String nickname;
+    private Long stampCount;
 }

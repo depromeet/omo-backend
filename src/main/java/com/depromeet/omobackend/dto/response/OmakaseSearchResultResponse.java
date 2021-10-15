@@ -17,4 +17,6 @@ public class OmakaseSearchResultResponse {
 
     private List<OmakaseSearchResultDto> countySearch;
 
+    private Integer totalElements;
+
 }
