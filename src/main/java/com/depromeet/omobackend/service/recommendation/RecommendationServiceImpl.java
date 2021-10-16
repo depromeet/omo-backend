@@ -27,9 +27,10 @@ public class RecommendationServiceImpl implements RecommendationService {
         Omakase omakase = omakaseRepository.findById(omakaseId)
                 .orElseThrow(OmakaseNotFoundException::new);
 
-        Optional<Recommendation> recommendation = recommendationRepository.findByUserAndOmakase(user, omakase);
+        Recommendation recommendation = recommendationRepository.findByUserAndOmakase(user, omakase)
+                .orElseThrow(null);
 
-        if (recommendation.isPresent()) {
+        if (recommendation != null) {
             recommendationRepository.delete(recommendation);
             return false;
         } else {

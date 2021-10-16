@@ -2,7 +2,6 @@ package com.depromeet.omobackend.service.auth;
 
 import com.depromeet.omobackend.exception.UserNotAuthenticatedException;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
-import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout() {
         try{
-            refreshTokenRepository.deleteAllByEmail(authenticationUtil.getUserEmail());
+            System.out.println(authenticationUtil.getUserEmail());
+            refreshTokenRepository.deleteById(authenticationUtil.getUserEmail());
         } catch(Exception e) {
+            e.printStackTrace();
             throw new UserNotAuthenticatedException();
         }
     }

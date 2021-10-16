@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+
     private final OmoOAuthService omoOauthService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
@@ -33,4 +34,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .permitAll()
         ;
     }
+
 }
