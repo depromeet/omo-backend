@@ -1,11 +1,10 @@
 package com.depromeet.omobackend.controller;
 
-import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.response.MypageResponse;
-import com.depromeet.omobackend.dto.user.UserDto;
 import com.depromeet.omobackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,9 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
 
+    @Value("${profile.upload.directory}")
+    private String profileUploadPath;
+
     private final UserService userService;
 
     @GetMapping("/user")
@@ -22,15 +24,17 @@ public class UserController {
         return userService.getMyPage(email);
     }
 
-    @PostMapping(value = "/user")
-    public User save(@RequestBody UserDto userDto) {
-        return userService.saveAccount(userDto);
-    }
-
-    @DeleteMapping("/logout")
-    public void logout() {
-        userService.logout();
-    }
+//    @PostMapping(value = "/user")
+//    public void save(@ModelAttribute(name = "user") UserDto user, HttpServletResponse response,
+//                     @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+//
+//        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//        user.setProfileImage(fileName);
+//        User savedUser = userService.saveAccount(user);
+//        String uploadDir = profileUploadPath + savedUser.getId();
+//
+//        ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
+//    }
 
     @DeleteMapping("/user")
     public void deleteAccount() {

@@ -2,7 +2,7 @@ package com.depromeet.omobackend.domain.recommendation;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @IdClass(RecommendationId.class)
 @Entity
 public class Recommendation {
@@ -23,11 +24,5 @@ public class Recommendation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "omakase_id", nullable = false)
     private Omakase omakase;
-
-    @Builder
-    public Recommendation(User user, Omakase omakase) {
-        this.user = user;
-        this.omakase = omakase;
-    }
 
 }

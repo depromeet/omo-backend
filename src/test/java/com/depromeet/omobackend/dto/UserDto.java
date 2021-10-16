@@ -1,16 +1,13 @@
-package com.depromeet.omobackend.dto.user;
+package com.depromeet.omobackend.dto;
 
 import com.depromeet.omobackend.domain.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@NoArgsConstructor
+/*@Getter
+@NoArgsConstructor*/
 public class UserDto {
-    private String nickname;
+    /*private String nickname;
     private String email;
     private String description;
     private Boolean isActivated;
@@ -20,7 +17,7 @@ public class UserDto {
 
     @Builder
     public UserDto(String nickname, String email, String description, boolean isActivated,
-                   String profileImage, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+                   String profileImage) {
         this.nickname = nickname;
         this.email = email;
         this.description = description;
@@ -35,8 +32,7 @@ public class UserDto {
         return User.builder()
                 .nickname(nickname)
                 .email(email)
-                .description(description)
-                .profileImage(profileImage)
+                .profileUrl(profileImage)
                 .build();
-    }
+    }*/
 }
