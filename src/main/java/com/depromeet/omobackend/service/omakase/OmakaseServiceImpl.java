@@ -59,9 +59,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .priceInformation(omakase.getPriceInformation())
                 .businessHours(omakase.getBusinessHours())
                 .isRecommendation(recommendationRepository.findByUserAndOmakase(user, omakase).isPresent())
-                .stamps(stampRepository.findAllByUserAndIsCertifiedTrueOrderByCreatedDate(user).stream()
-                    .map(stamp -> new StampsDto(stamp.getId(), stamp.getCreatedDate())).collect(Collectors.toList())
-                )
+                .recommendationCount(recommendationRepository.findAllByOmakase(omakase).size())
                 .build();
     }
 

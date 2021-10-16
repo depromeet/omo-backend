@@ -31,6 +31,6 @@ public class OmakaseDetailsResponse {
 
     private String businessHours;
 
-    private List<StampsDto> stamps;
+    private Integer recommendationCount;
 
 }
