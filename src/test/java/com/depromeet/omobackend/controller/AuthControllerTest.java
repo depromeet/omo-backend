@@ -58,6 +58,15 @@ public class AuthControllerTest {
                         .build()
         ).getEmail();
 
+        userRepository.save(
+                User.builder()
+                        .nickname("야호야호야호")
+                        .email("test1234@gmail.com")
+                        .profileUrl("asdf")
+                        .role(Role.USER)
+                        .build()
+        );
+
         refreshTokenRepository.save(
                 new RefreshToken(email, jwtTokenProvider.generateRefreshToken(email), 1256L)
         );
@@ -76,6 +85,20 @@ public class AuthControllerTest {
         mvc.perform(delete("/logout"))
                 .andExpect(status().isOk());
 
+    }
+
+    @WithMockUser(value = "test1234@gmail.com")
+    @Test
+    public void deleteAccount() throws Exception {
+        mvc.perform(delete("/user"))
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "testest@gmail.com")
+    @Test
+    public void deleteAccount_404() throws Exception {
+        mvc.perform(delete("/user"))
+                .andExpect(status().isNotFound());
     }
 
 }
