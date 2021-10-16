@@ -65,28 +65,23 @@ public class UserServiceImpl implements UserService {
                 .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
                     .map(stamp -> {
                         Omakase omakase = stamp.getOmakase();
-                        Stamp recentlyStamp = stampRepository.findFirstByOmakaseOrderByCreatedDateDesc(omakase)
-                                .orElse(null);
                         return OmakasesDto.builder()
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())
-                                    .createDate(recentlyStamp == null ? null : recentlyStamp.getCreatedDate())
-                                    .isCertified(recentlyStamp == null ? null : recentlyStamp.getIsCertified())
+                                    .createDate(stamp.getCreatedDate())
+                                    .isCertified(stamp.getIsCertified())
                                     .build();
                     }).collect(Collectors.toList()))
                 .build();
     }
 
-    // 변동 가능
     private Integer getPower(Integer stampCount) {
-        if (stampCount < 16) {
-            return 1;
-        } else if(stampCount < 31) {
-            return 2;
-        } else {
-            return 3;
-        }
+        if (stampCount < 2) return stampCount;
+        else if (stampCount <= 4) return 2;
+        else if (stampCount <= 9) return 3;
+        else if (stampCount <= 19) return 4;
+        else return 5;
     }
 
 }
