@@ -1,7 +1,6 @@
 package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
-import com.depromeet.omobackend.domain.stamp.Stamp;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
@@ -31,6 +30,11 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
+    public void checkNicknameDuplicate(String nickname) {
+        checkNickname(nickname);
+    }
+
+    @Override
     @Transactional
     public void deleteAccount() {
         User user = authenticationUtil.getUser();
@@ -39,10 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyNickname(String nickname) {
-        userRepository.findByNickname(nickname)
-                .ifPresent(user -> {
-                    throw new UserNicknameAlreadyExistsException();
-                });
+        checkNickname(nickname);
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
     }
@@ -74,6 +75,13 @@ public class UserServiceImpl implements UserService {
                                     .build();
                     }).collect(Collectors.toList()))
                 .build();
+    }
+
+    private void checkNickname(String nickname) {
+        userRepository.findByNickname(nickname)
+                .ifPresent(user -> {
+                    throw new UserNicknameAlreadyExistsException();
+                });
     }
 
     private Integer getPower(Integer stampCount) {
