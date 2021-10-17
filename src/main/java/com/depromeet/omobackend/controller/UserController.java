@@ -76,6 +76,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/check")
+    public void checkNicknameDuplicate(@RequestParam String nickname) {
+        userService.checkNicknameDuplicate(nickname);
+    }
+
     @DeleteMapping("/user")
     public void deleteAccount() {
         userService.deleteAccount();

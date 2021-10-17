@@ -5,7 +5,9 @@ import com.depromeet.omobackend.dto.request.UserSaveRequestDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 
 public interface UserService {
+
     User saveAccount(UserSaveRequestDto userDto);
+    void checkNicknameDuplicate(String nickname);
     void deleteAccount();
     void modifyNickname(String nickname);
     MypageResponse getMyPage(String email);
