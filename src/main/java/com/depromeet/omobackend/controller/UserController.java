@@ -24,6 +24,11 @@ public class UserController {
         return userService.getMyPage(email);
     }
 
+    @GetMapping("/user/check")
+    public void checkNicknameDuplicate(@RequestParam String nickname) {
+        userService.checkNicknameDuplicate(nickname);
+    }
+
 //    @PostMapping(value = "/user")
 //    public void save(@ModelAttribute(name = "user") UserDto user, HttpServletResponse response,
 //                     @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {

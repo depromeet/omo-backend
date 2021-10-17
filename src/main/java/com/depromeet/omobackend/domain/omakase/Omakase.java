@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -64,7 +65,7 @@ public class Omakase {
     private Location location;
 
     @Builder
-    public Omakase(String name, String address, String county, String phoneNumber, String photoUrl, String description, Level level, Category category, String priceInformation, String businessHours, Holiday holiday, List<Stamp> stamps, List<Recommendation> recommendations, Location location) {
+    public Omakase(String name, String address, String county, String phoneNumber, String photoUrl, String description, Level level, Category category, String priceInformation, String businessHours, Holiday holiday) {
         this.name = name;
         this.address = address;
         this.county = county;
@@ -76,9 +77,7 @@ public class Omakase {
         this.businessHours = businessHours;
         this.category = category;
         this.holiday = holiday;
-        this.stamps = stamps;
-        this.recommendations = recommendations;
-        this.location = location;
+        this.location = new Location(BigDecimal.ONE, BigDecimal.ONE, this);
     }
 
 }

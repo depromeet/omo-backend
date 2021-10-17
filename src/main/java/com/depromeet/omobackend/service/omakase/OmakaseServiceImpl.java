@@ -6,7 +6,6 @@ import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakaseDetailsResponse;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultDto;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
-import com.depromeet.omobackend.dto.response.StampsDto;
 import com.depromeet.omobackend.exception.OmakaseNotFoundException;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
 import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 public class OmakaseServiceImpl implements OmakaseService {
 
     private final OmakaseRepository omakaseRepository;
-    private final StampRepository stampRepository;
     private final RecommendationRepository recommendationRepository;
 
     private final AuthenticationUtil authenticationUtil;
@@ -44,7 +42,7 @@ public class OmakaseServiceImpl implements OmakaseService {
     }
 
     @Override
-    public OmakaseDetailsResponse getOmakase(long id) {
+    public OmakaseDetailsResponse getOmakaseDetail(long id) {
         User user = authenticationUtil.getUser();
         Omakase omakase = omakaseRepository.findById(id)
                 .orElseThrow(OmakaseNotFoundException::new);
@@ -59,9 +57,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .priceInformation(omakase.getPriceInformation())
                 .businessHours(omakase.getBusinessHours())
                 .isRecommendation(recommendationRepository.findByUserAndOmakase(user, omakase).isPresent())
-                .stamps(stampRepository.findAllByUserAndIsCertifiedTrueOrderByCreatedDate(user).stream()
-                    .map(stamp -> new StampsDto(stamp.getId(), stamp.getCreatedDate())).collect(Collectors.toList())
-                )
+                .recommendationCount(recommendationRepository.findAllByOmakase(omakase).size())
                 .build();
     }
 
