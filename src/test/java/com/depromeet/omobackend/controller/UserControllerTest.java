@@ -58,7 +58,7 @@ public class UserControllerTest {
                 User.builder()
                         .nickname("야호야호야호")
                         .email("test1234@gmail.com")
-                        .profileUrl("asdf")
+                        .profileUrl("jkl;")
                         .role(Role.USER)
                         .build()
         );
@@ -92,6 +92,20 @@ public class UserControllerTest {
                 .content(new ObjectMapper().writeValueAsString(new ModifyNicknameRequest("헬로헬로")))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isNoContent());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void mypage() throws Exception {
+        mvc.perform(get("/user")
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void other_profile() throws Exception {
+        mvc.perform(get("/user/test1234@gmail.com")
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     /*@DisplayName("회원 가입 테스트")

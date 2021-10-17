@@ -48,10 +48,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user.modifyNickname(nickname));
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public MypageResponse getMyPage(String email) {
-        User user = authenticationUtil.getUser();
+        User user;
+        if (email != null) user = authenticationUtil.getUser(email);
+        else user = authenticationUtil.getUser();
+
         Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
 
         return MypageResponse.builder()
