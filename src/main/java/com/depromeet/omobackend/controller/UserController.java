@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user")
+    @GetMapping("/user/{email}")
     public MypageResponse getMyPage(@PathVariable(required = false) String email) {
         return userService.getMyPage(email);
     }
