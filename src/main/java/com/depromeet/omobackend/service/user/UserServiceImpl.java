@@ -2,8 +2,9 @@ package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
+import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
-import com.depromeet.omobackend.dto.response.MypageResponse;
+import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
@@ -50,34 +51,43 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public MypageResponse getMyPage(String email) {
-        User user;
-        if (email != null) user = authenticationUtil.getUser(email);
-        else user = authenticationUtil.getUser();
-
+    public UserInfoResponse getUserInfo(String email) {
+        User user = getUser(email);
         Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
 
-        return MypageResponse.builder()
-                .user(
+        return new UserInfoResponse(
                         UserDto.builder()
                         .nickname(user.getNickname())
                         .profileUrl(user.getProfileUrl())
                         .stampCount(stampCount)
                         .power(getPower(stampCount))
                         .build()
-                )
-                .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
-                    .map(stamp -> {
-                        Omakase omakase = stamp.getOmakase();
-                        return OmakasesDto.builder()
+        );
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public MyOmakasesResponse getMyOmakases(String email) {
+        User user = getUser(email);
+
+        return new MyOmakasesResponse(
+                (stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
+                        .map(stamp -> {
+                            Omakase omakase = stamp.getOmakase();
+                            return OmakasesDto.builder()
                                     .id(omakase.getId())
                                     .name(omakase.getName())
                                     .photoUrl(omakase.getPhotoUrl())
                                     .createDate(stamp.getCreatedDate())
                                     .isCertified(stamp.getIsCertified())
                                     .build();
-                    }).collect(Collectors.toList()))
-                .build();
+                        }).collect(Collectors.toList()))
+        );
+    }
+
+    private User getUser(String email) {
+        if (email != null) return authenticationUtil.getUser(email);
+        else return authenticationUtil.getUser();
     }
 
     private void checkNickname(String nickname) {
