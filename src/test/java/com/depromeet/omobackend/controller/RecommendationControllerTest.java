@@ -9,7 +9,6 @@ import com.depromeet.omobackend.domain.user.Role;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.repository.location.LocationRepository;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
-import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -48,13 +45,9 @@ public class RecommendationControllerTest {
     @Autowired
     private LocationRepository locationRepository;
 
-    @Autowired
-    private RecommendationRepository recommendationRepository;
-
     private MockMvc mvc;
 
     Omakase omakase;
-    User user;
 
     @BeforeEach
     public void setUp() {
@@ -62,7 +55,7 @@ public class RecommendationControllerTest {
                 .webAppContextSetup(context)
                 .build();
 
-        user = userRepository.save(
+        userRepository.save(
                 User.builder()
                         .nickname("테스트")
                         .email("test@gmail.com")
