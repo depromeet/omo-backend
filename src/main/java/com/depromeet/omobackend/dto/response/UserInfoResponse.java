@@ -8,13 +8,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MypageResponse {
+public class UserInfoResponse {
 
     private UserDto user;
-
-    private List<OmakasesDto> omakases;
 
 }
