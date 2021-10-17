@@ -3,6 +3,7 @@ package com.depromeet.omobackend.service.user;
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.stamp.Stamp;
 import com.depromeet.omobackend.domain.user.User;
+import com.depromeet.omobackend.dto.request.UserSaveRequestDto;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.UserDto;
@@ -24,11 +25,11 @@ public class UserServiceImpl implements UserService {
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
-//    @Override
-//    @Transactional
-//    public User saveAccount(com.depromeet.omobackend.dto.user.UserDto userDto) {
-//        return userRepository.save(userDto.toEntity());
-//    }
+    @Override
+    @Transactional
+    public User saveAccount(UserSaveRequestDto requestDto) {
+        return userRepository.save(requestDto.toEntity());
+    }
 
     @Override
     @Transactional
