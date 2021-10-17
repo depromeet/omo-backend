@@ -20,12 +20,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user/{email}")
+    @GetMapping({"/user/{email}", "/user"})
     public UserInfoResponse getUserInfo(@PathVariable(required = false) String email) {
         return userService.getUserInfo(email);
     }
 
-    @GetMapping("/my-omakase/{email}")
+    @GetMapping({"/my-omakase/{email}", "/my-omakase"})
     public MyOmakasesResponse getMyOmakases(@PathVariable(required = false) String email) {
         return userService.getMyOmakases(email);
     }

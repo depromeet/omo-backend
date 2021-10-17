@@ -8,10 +8,17 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfoResponse {
 
-    private UserDto user;
+    private String nickname;
+
+    private String profileUrl;
+
+    private Integer stampCount;
+
+    private Integer power;
 
 }

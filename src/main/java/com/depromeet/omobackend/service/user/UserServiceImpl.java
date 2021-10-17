@@ -5,7 +5,6 @@ import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.UserInfoResponse;
-import com.depromeet.omobackend.dto.response.UserDto;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
@@ -55,14 +54,12 @@ public class UserServiceImpl implements UserService {
         User user = getUser(email);
         Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
 
-        return new UserInfoResponse(
-                        UserDto.builder()
-                        .nickname(user.getNickname())
-                        .profileUrl(user.getProfileUrl())
-                        .stampCount(stampCount)
-                        .power(getPower(stampCount))
-                        .build()
-        );
+        return UserInfoResponse.builder()
+                .nickname(user.getNickname())
+                .profileUrl(user.getProfileUrl())
+                .stampCount(stampCount)
+                .power(getPower(stampCount))
+                .build();
     }
 
     @Transactional(readOnly = true)
