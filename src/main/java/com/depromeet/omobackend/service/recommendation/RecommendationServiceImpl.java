@@ -9,9 +9,9 @@ import com.depromeet.omobackend.repository.recommendation.RecommendationReposito
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
@@ -28,7 +28,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .orElseThrow(OmakaseNotFoundException::new);
 
         Recommendation recommendation = recommendationRepository.findByUserAndOmakase(user, omakase)
-                .orElseThrow(null);
+                .orElse(null);
 
         if (recommendation != null) {
             recommendationRepository.delete(recommendation);
