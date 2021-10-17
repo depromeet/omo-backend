@@ -5,5 +5,5 @@ import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
 
 public interface OmakaseService {
     OmakaseSearchResultResponse searchOmakase(String level, String keyword);
-    OmakaseDetailsResponse getOmakase(long id);
+    OmakaseDetailsResponse getOmakaseDetail(long id);
 }

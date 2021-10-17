@@ -48,7 +48,8 @@ CREATE TABLE `stamp`(
      `user_id` BIGINT NOT NULL,
      PRIMARY KEY(`id`),
      FOREIGN KEY(`omakase_id`) REFERENCES `omakase`(`id`),
-     FOREIGN KEY(`user_id`) REFERENCES `user`(`id`)
+     FOREIGN KEY(`user_id`) REFERENCES `user`(`id`),
+     CONSTRAINT uniq UNIQUE (`user_id`, `omakase_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `recommendation`(

@@ -22,7 +22,7 @@ public class OmakaseController {
 
     @GetMapping("/omakase/{id}")
     public OmakaseDetailsResponse getOmakase(@PathVariable long id) {
-        return omakaseService.getOmakase(id);
+        return omakaseService.getOmakaseDetail(id);
     }
 
 }
