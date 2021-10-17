@@ -5,10 +5,12 @@ import com.depromeet.omobackend.domain.omakase.Category;
 import com.depromeet.omobackend.domain.omakase.Holiday;
 import com.depromeet.omobackend.domain.omakase.Level;
 import com.depromeet.omobackend.domain.omakase.Omakase;
+import com.depromeet.omobackend.domain.recommendation.Recommendation;
 import com.depromeet.omobackend.domain.user.Role;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.repository.location.LocationRepository;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
+import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +47,13 @@ public class OmakaseControllerTest {
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    private RecommendationRepository recommendationRepository;
+
     private MockMvc mvc;
+
+    Omakase omakase;
+    User user;
 
     @BeforeEach
     public void setUp() {
@@ -53,7 +61,7 @@ public class OmakaseControllerTest {
                 .webAppContextSetup(context)
                 .build();
 
-        userRepository.save(
+        user = userRepository.save(
                 User.builder()
                         .nickname("테스트")
                         .email("test@gmail.com")
@@ -62,7 +70,7 @@ public class OmakaseControllerTest {
                         .build()
         );
 
-        createOmakase("맛있는 오마카세", "수지구", "HIGH");
+        omakase = createOmakase("맛있는 오마카세", "수지구", "HIGH");
         createOmakase("맛있는 오마카세", "기흥구", "HIGH");
         createOmakase("맛있는 초밥", "수지구", "ENTRY");
         createOmakase("맛업는 초밥", "기흥구", "HIGH");
@@ -94,6 +102,16 @@ public class OmakaseControllerTest {
         mvc.perform(get("/omakases")
                 .param("level","ENTRY")
                 .param("keyword","처인구")
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void getOmakase() throws Exception {
+        recommendationRepository.save(new Recommendation(user, omakase));
+        omakase.plusRecommendationCount();
+
+        mvc.perform(get("/omakase/" + omakase.getId())
         ).andExpect(status().isOk()).andDo(print());
     }
 

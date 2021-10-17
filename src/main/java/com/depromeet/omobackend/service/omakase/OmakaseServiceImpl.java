@@ -54,7 +54,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .priceInformation(omakase.getPriceInformation())
                 .businessHours(omakase.getBusinessHours())
                 .isRecommendation(recommendationRepository.findByUserAndOmakase(user, omakase).isPresent())
-                .recommendationCount(recommendationRepository.findAllByOmakase(omakase).size())
+                .recommendationCount(omakase.getRecommendationCount())
                 .build();
     }
 
