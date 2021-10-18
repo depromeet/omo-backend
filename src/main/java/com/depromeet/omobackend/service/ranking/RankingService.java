@@ -8,5 +8,5 @@ import java.util.List;
 public interface RankingService {
     RankingDto getMyRanking();
     List<RankingDto> getRankers(int limit);
-    RankingInCountyDto getMyCountyRanking();
+//    RankingInCountyDto getMyCountyRanking();
 }
