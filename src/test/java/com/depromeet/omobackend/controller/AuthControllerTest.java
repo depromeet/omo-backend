@@ -49,23 +49,8 @@ public class AuthControllerTest {
                 .webAppContextSetup(context)
                 .build();
 
-        String email = userRepository.save(
-                User.builder()
-                        .nickname("테스트")
-                        .email("test@gmail.com")
-                        .profileUrl("asdf")
-                        .role(Role.USER)
-                        .build()
-        ).getEmail();
-
-        userRepository.save(
-                User.builder()
-                        .nickname("야호야호야호")
-                        .email("test1234@gmail.com")
-                        .profileUrl("asdf")
-                        .role(Role.USER)
-                        .build()
-        );
+        String email = createUser("테스트", "test@gmail.com").getEmail();
+        createUser("야호야호야호", "test1234@gmail.com");
 
         refreshTokenRepository.save(
                 new RefreshToken(email, jwtTokenProvider.generateRefreshToken(email), 1256L)
@@ -99,6 +84,17 @@ public class AuthControllerTest {
     public void deleteAccount_404() throws Exception {
         mvc.perform(delete("/user"))
                 .andExpect(status().isNotFound());
+    }
+
+    private User createUser(String nickname, String email) {
+        return userRepository.save(
+                User.builder()
+                        .nickname(nickname)
+                        .email(email)
+                        .profileUrl("asdf")
+                        .role(Role.USER)
+                        .build()
+        );
     }
 
 }
