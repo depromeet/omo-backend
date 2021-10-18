@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class RankingDto {
     private Long ranking;
     private String nickname;
-    private Long stampCount;
+    private Integer stampCount;
+    private String profileUrl;
 }
