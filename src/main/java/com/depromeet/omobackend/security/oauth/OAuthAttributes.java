@@ -18,19 +18,13 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) throws InvalidOAuthException {
-        if (registrationId.equals("kakao")) {
+        if (registrationId.equals("kakao") || registrationId.equals("naver")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("id");
+
             return new OAuthAttributes(attributes,
                     userNameAttributeName,
                     (String) response.get("email"));
-        }
-        else if (registrationId.equals("naver")){
-            Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-            return new OAuthAttributes(attributes,
-                    userNameAttributeName,
-                    (String) response.get("email"));
-        }
-        else {
+        } else {
             throw new InvalidOAuthException();
         }
     }
