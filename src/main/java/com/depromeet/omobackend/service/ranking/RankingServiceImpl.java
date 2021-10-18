@@ -48,8 +48,8 @@ public class RankingServiceImpl implements RankingService {
         return rankers;
     }
 
-    @Override
-    public RankingInCountyDto getMyCountyRanking() {
-        return null;
-    }
+//    @Override
+//    public RankingInCountyDto getMyCountyRanking() {
+//        return null;
+//    }
 }
