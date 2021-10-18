@@ -13,9 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OmakaseSearchResultResponse {
 
-    private List<OmakaseSearchResultDto> nameSearch;
-
-    private List<OmakaseSearchResultDto> countySearch;
+    private List<OmakaseSearchResultDto> omakases;
 
     private Integer totalElements;
 

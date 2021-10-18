@@ -1,14 +1,11 @@
 package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
-import com.depromeet.omobackend.domain.stamp.Stamp;
 import com.depromeet.omobackend.domain.user.User;
+import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
-import com.depromeet.omobackend.dto.response.MypageResponse;
-import com.depromeet.omobackend.dto.response.UserDto;
+import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
-import com.depromeet.omobackend.exception.UserNotAuthenticatedException;
-import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
@@ -23,7 +20,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
@@ -34,6 +30,11 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
+    public void checkNicknameDuplicate(String nickname) {
+        checkNickname(nickname);
+    }
+
+    @Override
     @Transactional
     public void deleteAccount() {
         User user = authenticationUtil.getUser();
@@ -41,64 +42,64 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout() {
-        try{
-            refreshTokenRepository.deleteAllByEmail(authenticationUtil.getUserEmail());
-        } catch(Exception e) {
-            throw new UserNotAuthenticatedException();
-        }
-    }
-
-    @Override
     public void modifyNickname(String nickname) {
-        userRepository.findByNickname(nickname)
-                .ifPresent(user -> {
-                    throw new UserNicknameAlreadyExistsException();
-                });
+        checkNickname(nickname);
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
     }
 
-    @Override
     @Transactional(readOnly = true)
-    public MypageResponse getMyPage(String email) {
-        User user = authenticationUtil.getUser();
+    @Override
+    public UserInfoResponse getUserInfo(String email) {
+        User user = getUser(email);
         Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
 
-        return MypageResponse.builder()
-                .user(
-                        UserDto.builder()
-                        .nickname(user.getNickname())
-                        .profileUrl(user.getProfileUrl())
-                        .stampCount(stampCount)
-                        .power(getPower(stampCount))
-                        .build()
-                )
-                .omakases(stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
-                    .map(stamp -> {
-                        Omakase omakase = stamp.getOmakase();
-                        Stamp recentlyStamp = stampRepository.findFirstByOmakaseOrderByCreatedDateDesc(omakase)
-                                .orElse(null);
-                        return OmakasesDto.builder()
-                                    .id(omakase.getId())
-                                    .name(omakase.getName())
-                                    .photoUrl(omakase.getPhotoUrl())
-                                    .createDate(recentlyStamp == null ? null : recentlyStamp.getCreatedDate())
-                                    .isCertified(recentlyStamp == null ? null : recentlyStamp.getIsCertified())
-                                    .build();
-                    }).collect(Collectors.toList()))
+        return UserInfoResponse.builder()
+                .nickname(user.getNickname())
+                .profileUrl(user.getProfileUrl())
+                .stampCount(stampCount)
+                .power(getPower(stampCount))
                 .build();
     }
 
-    // 변동 가능
+    @Transactional(readOnly = true)
+    @Override
+    public MyOmakasesResponse getMyOmakases(String email) {
+        User user = getUser(email);
+
+        return new MyOmakasesResponse(
+                (stampRepository.findByUserOrderByCreatedDateDesc(user).stream()
+                        .map(stamp -> {
+                            Omakase omakase = stamp.getOmakase();
+                            return OmakasesDto.builder()
+                                    .id(omakase.getId())
+                                    .name(omakase.getName())
+                                    .photoUrl(omakase.getPhotoUrl())
+                                    .createDate(stamp.getCreatedDate())
+                                    .isCertified(stamp.getIsCertified())
+                                    .build();
+                        }).collect(Collectors.toList()))
+        );
+    }
+
+    private User getUser(String email) {
+        if (email != null) return authenticationUtil.getUser(email);
+        else return authenticationUtil.getUser();
+    }
+
+    private void checkNickname(String nickname) {
+        userRepository.findByNickname(nickname)
+                .ifPresent(user -> {
+                    throw new UserNicknameAlreadyExistsException();
+                });
+    }
+
     private Integer getPower(Integer stampCount) {
-        if (stampCount < 16) {
-            return 1;
-        } else if(stampCount < 31) {
-            return 2;
-        } else {
-            return 3;
-        }
+        if (stampCount < 2) return stampCount;
+        else if (stampCount <= 4) return 2;
+        else if (stampCount <= 9) return 3;
+        else if (stampCount <= 19) return 4;
+        else return 5;
     }
 
 }

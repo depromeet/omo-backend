@@ -29,4 +29,10 @@ public class AuthenticationUtil {
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    public User getUser(String email) {
+        return userRepository.findByEmail(email)
+                .filter(User::getIsActivated)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
 }

@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OmakaseDetailsResponse {
+
+    private Boolean isRecommendation;
 
     private String imageUrl;
 
@@ -29,6 +29,6 @@ public class OmakaseDetailsResponse {
 
     private String businessHours;
 
-    private List<StampsDto> stamps;
+    private Long recommendationCount;
 
 }

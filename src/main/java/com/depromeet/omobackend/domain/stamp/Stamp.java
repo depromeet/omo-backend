@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "omakase_id"}))
 public class Stamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

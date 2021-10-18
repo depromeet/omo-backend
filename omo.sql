@@ -27,6 +27,7 @@ CREATE TABLE `omakase`(
     `category` VARCHAR(20) NOT NULL,
     `price_information` VARCHAR(100),
     `business_hours` VARCHAR(100),
+    `recommendation_count` BIGINT NOT NULL,
     `holiday` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'),
     PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -48,7 +49,8 @@ CREATE TABLE `stamp`(
      `user_id` BIGINT NOT NULL,
      PRIMARY KEY(`id`),
      FOREIGN KEY(`omakase_id`) REFERENCES `omakase`(`id`),
-     FOREIGN KEY(`user_id`) REFERENCES `user`(`id`)
+     FOREIGN KEY(`user_id`) REFERENCES `user`(`id`),
+     CONSTRAINT uniq UNIQUE (`user_id`, `omakase_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `recommendation`(

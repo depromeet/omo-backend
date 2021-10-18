@@ -1,0 +1,29 @@
+spring:
+  jackson:
+    property-naming-strategy: LOWER_CAMEL_CASE
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: test
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    generate-ddl: true
+  redis:
+    host: localhost
+    port: 6380
+
+auth:
+  jwt:
+    secret: asdf1234
+    exp:
+      access: 2021
+      refresh: 20210629
+
+profile:
+  upload:
+    directory: asdf
