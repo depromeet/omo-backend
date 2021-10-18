@@ -1,7 +1,8 @@
 package com.depromeet.omobackend.controller;
 
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
-import com.depromeet.omobackend.dto.response.MypageResponse;
+import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
+import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +20,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user")
-    public MypageResponse getMyPage(@PathVariable(required = false) String email) {
-        return userService.getMyPage(email);
+    @GetMapping({"/user/{email}", "/user"})
+    public UserInfoResponse getUserInfo(@PathVariable(required = false) String email) {
+        return userService.getUserInfo(email);
+    }
+
+    @GetMapping({"/my-omakase/{email}", "/my-omakase"})
+    public MyOmakasesResponse getMyOmakases(@PathVariable(required = false) String email) {
+        return userService.getMyOmakases(email);
     }
 
     @GetMapping("/user/check")

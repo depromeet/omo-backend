@@ -9,7 +9,6 @@ import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
 import com.depromeet.omobackend.exception.OmakaseNotFoundException;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
 import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
-import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,15 +28,13 @@ public class OmakaseServiceImpl implements OmakaseService {
     @Override
     public OmakaseSearchResultResponse searchOmakase(String level, String keyword) {
         authenticationUtil.getUser();
-        List<OmakaseSearchResultDto> nameSearch = omakaseRepository.findAllByLevelAndNameLikeOrderByRecommendationsDescName(Level.valueOf(level), "%"+keyword+"%").stream()
-                .map(this::omakaseSearchResult).collect(Collectors.toList());
-        List<OmakaseSearchResultDto> countySearch = omakaseRepository.findAllByLevelAndCountyLikeOrderByRecommendationsDescName(Level.valueOf(level),"%"+keyword+"%").stream()
+        List<OmakaseSearchResultDto> omakases =
+                omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), "%"+keyword+"%").stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
 
         return OmakaseSearchResultResponse.builder()
-                .nameSearch(nameSearch)
-                .countySearch(countySearch)
-                .totalElements(nameSearch.size() + countySearch.size())
+                .omakases(omakases)
+                .totalElements(omakases.size())
                 .build();
     }
 
@@ -57,7 +54,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .priceInformation(omakase.getPriceInformation())
                 .businessHours(omakase.getBusinessHours())
                 .isRecommendation(recommendationRepository.findByUserAndOmakase(user, omakase).isPresent())
-                .recommendationCount(recommendationRepository.findAllByOmakase(omakase).size())
+                .recommendationCount(omakase.getRecommendationCount())
                 .build();
     }
 

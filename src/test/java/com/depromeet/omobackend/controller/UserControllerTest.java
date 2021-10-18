@@ -1,32 +1,120 @@
 package com.depromeet.omobackend.controller;
 
+import com.depromeet.omobackend.domain.user.Role;
 import com.depromeet.omobackend.domain.user.User;
-import com.depromeet.omobackend.dto.UserDto;
+import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.repository.user.UserRepository;
-import org.junit.jupiter.api.DisplayName;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserControllerTest {
 
+    /*@Autowired
+    private TestRestTemplate restTemplate;*/
+
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WebApplicationContext context;
 
     @Autowired
     private UserRepository userRepository;
+
+    private MockMvc mvc;
+
+    @BeforeEach
+    public void setUp() {
+        mvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
+
+        userRepository.save(
+                User.builder()
+                        .nickname("테스트")
+                        .email("test@gmail.com")
+                        .profileUrl("asdf")
+                        .role(Role.USER)
+                        .build()
+        );
+
+        userRepository.save(
+                User.builder()
+                        .nickname("야호야호야호")
+                        .email("test1234@gmail.com")
+                        .profileUrl("jkl;")
+                        .role(Role.USER)
+                        .build()
+        );
+    }
+
+    @AfterEach
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
+
+    @Test
+    public void checkNicknameDuplicate() throws Exception {
+        mvc.perform(get("/user/check")
+                .param("nickname","헝거게임")
+                .characterEncoding("UTF-8")
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void checkNicknameDuplicate_409() throws Exception {
+        mvc.perform(get("/user/check")
+                .param("nickname","테스트")
+                .characterEncoding("UTF-8")
+        ).andExpect(status().isConflict());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void modifyNickname() throws Exception {
+        mvc.perform(patch("/user")
+                .content(new ObjectMapper().writeValueAsString(new ModifyNicknameRequest("헬로헬로")))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void mypage() throws Exception {
+        mvc.perform(get("/user")
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void other_profile() throws Exception {
+        mvc.perform(get("/user/test1234@gmail.com")
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void getMyOmakases() throws Exception {
+        mvc.perform(get("/my-omakase")
+        ).andDo(print())
+        .andExpect(status().isOk()).andDo(print());
+    }
 
     /*@DisplayName("회원 가입 테스트")
     @Test

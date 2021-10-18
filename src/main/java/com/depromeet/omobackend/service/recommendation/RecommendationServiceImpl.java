@@ -32,9 +32,11 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         if (recommendation != null) {
             recommendationRepository.delete(recommendation);
+            omakaseRepository.save(omakase.minusRecommendationCount());
             return false;
         } else {
             recommendationRepository.save(new Recommendation(user, omakase));
+            omakaseRepository.save(omakase.plusRecommendationCount());
             return true;
         }
     }
