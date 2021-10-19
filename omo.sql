@@ -11,6 +11,7 @@ CREATE TABLE `user`(
     `is_activated` TINYINT(1) NOT NULL DEFAULT 1,
     `profile_url` VARCHAR(255) NOT NULL,
     `created_date` DATETIME NOT NULL,
+    `last_stamp_date` DATE,
     `role` VARCHAR(5) NOT NULL,
     PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

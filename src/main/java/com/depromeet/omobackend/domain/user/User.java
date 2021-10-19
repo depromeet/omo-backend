@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime createdDate;
+
+    @Column
+    private LocalDate lastStampDate;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 5, nullable = false)
