@@ -52,6 +52,9 @@ public class Omakase {
     @Column(length = 100, nullable = false)
     private String businessHours;
 
+    @Column(nullable = false)
+    private Long recommendationCount;
+
     @Column(columnDefinition = "enum('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')")
     private Holiday holiday;
 
@@ -77,7 +80,18 @@ public class Omakase {
         this.businessHours = businessHours;
         this.category = category;
         this.holiday = holiday;
+        this.recommendationCount = 0L;
         this.location = new Location(BigDecimal.ONE, BigDecimal.ONE, this);
+    }
+
+    public Omakase plusRecommendationCount() {
+        this.recommendationCount++;
+        return this;
+    }
+
+    public Omakase minusRecommendationCount() {
+        this.recommendationCount--;
+        return this;
     }
 
 }

@@ -4,6 +4,8 @@ import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.request.UserSaveRequestDto;
 import com.depromeet.omobackend.dto.response.MypageResponse;
+import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
+import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.service.user.UserService;
 import com.depromeet.omobackend.util.ImageUploadUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +36,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user")
-    public MypageResponse getMyPage(@PathVariable(required = false) String email) {
-        return userService.getMyPage(email);
+    @GetMapping({"/user/{email}", "/user"})
+    public UserInfoResponse getUserInfo(@PathVariable(required = false) String email) {
+        return userService.getUserInfo(email);
+    }
+
+    @GetMapping({"/my-omakase/{email}", "/my-omakase"})
+    public MyOmakasesResponse getMyOmakases(@PathVariable(required = false) String email) {
+        return userService.getMyOmakases(email);
     }
 
     @PostMapping(value = "/user")

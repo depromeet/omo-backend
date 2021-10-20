@@ -11,6 +11,7 @@ CREATE TABLE `user`(
     `is_activated` TINYINT(1) NOT NULL DEFAULT 1,
     `profile_url` VARCHAR(255) NOT NULL,
     `created_date` DATETIME NOT NULL,
+    `last_stamp_date` DATE,
     `role` VARCHAR(5) NOT NULL,
     PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -27,6 +28,7 @@ CREATE TABLE `omakase`(
     `category` VARCHAR(20) NOT NULL,
     `price_information` VARCHAR(100),
     `business_hours` VARCHAR(100),
+    `recommendation_count` BIGINT NOT NULL,
     `holiday` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'),
     PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

@@ -11,10 +11,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MypageResponse {
+public class UserInfoResponse {
 
-    private UserDto user;
+    private String nickname;
 
-    private List<OmakasesDto> omakases;
+    private String profileUrl;
+
+    private Integer stampCount;
+
+    private Integer power;
 
 }
