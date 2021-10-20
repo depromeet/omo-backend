@@ -113,7 +113,7 @@ public class UserControllerTest {
     public void getMyOmakases() throws Exception {
         mvc.perform(get("/my-omakase")
         ).andDo(print())
-        .andExpect(status().isOk()).andDo(print());
+                .andExpect(status().isOk()).andDo(print());
     }
 
     /*@DisplayName("회원 가입 테스트")
