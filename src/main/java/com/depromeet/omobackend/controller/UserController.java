@@ -3,7 +3,6 @@ package com.depromeet.omobackend.controller;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.ModifyNicknameRequest;
 import com.depromeet.omobackend.dto.request.UserSaveRequestDto;
-import com.depromeet.omobackend.dto.response.MypageResponse;
 import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
 import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.service.user.UserService;

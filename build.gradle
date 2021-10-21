@@ -50,6 +50,9 @@ dependencies {
 	// serialize & deserialize
 	implementation 'com.google.code.gson:gson:2.8.5'
 
+	// file image upload
+	implementation 'commons-io:commons-io:2.6'
+
 	//test
 	implementation 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
