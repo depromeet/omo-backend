@@ -6,28 +6,58 @@ import com.depromeet.omobackend.dto.request.UserSaveRequestDto;
 import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
 import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.UserInfoResponse;
+import com.depromeet.omobackend.dto.response.UserSaveResponseDto;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
+import com.depromeet.omobackend.util.ImageUploadUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
+    public static final String MD_5 = "MD5";
+    public static final String UTF_8 = "UTF-8";
+
     private final UserRepository userRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
 
+    @Value("${profile.upload.directory}")
+    private String profileUploadPath;
+
     @Override
     @Transactional
-    public User saveAccount(UserSaveRequestDto requestDto) {
-        return userRepository.save(requestDto.toEntity());
+    public UserSaveResponseDto saveAccount(UserSaveRequestDto requestDto, MultipartFile multipartFile) throws IOException {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String email = requestDto.getEmail();
+        String hashFileName = getHashingFileName(email, fileName);
+        requestDto.setProfileUrl(hashFileName);
+        User savedUser = userRepository.save(requestDto.toEntity());
+
+        String uploadDir = profileUploadPath + savedUser.getId();
+        ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
+
+        // TODO Token 처리 필요
+        UserSaveResponseDto userSaveResponseDto = new UserSaveResponseDto();
+        userSaveResponseDto.setNickname(savedUser.getNickname());
+        userSaveResponseDto.setProfileUrl(savedUser.getProfileUrl());
+
+        return userSaveResponseDto;
     }
 
     @Override
@@ -101,6 +131,21 @@ public class UserServiceImpl implements UserService {
         else if (stampCount <= 9) return 3;
         else if (stampCount <= 19) return 4;
         else return 5;
+    }
+
+    private String getHashingFileName(String email, String fileName) {
+        if (fileName == null) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            MessageDigest md = MessageDigest.getInstance(MD_5);
+            md.update(email.getBytes(UTF_8), 0, email.length());
+            return new BigInteger(1, md.digest()).toString(16) + fileName;
+        } catch (NoSuchAlgorithmException e) {
+            return fileName;
+        } catch (UnsupportedEncodingException e) {
+            return fileName;
+        }
     }
 
 }
