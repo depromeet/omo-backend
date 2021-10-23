@@ -1,6 +1,7 @@
 package com.depromeet.omobackend.service.user;
 
 import com.depromeet.omobackend.domain.omakase.Omakase;
+import com.depromeet.omobackend.domain.refreshtoken.RefreshToken;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.UserSaveRequestDto;
 import com.depromeet.omobackend.dto.response.MyOmakasesResponse;
