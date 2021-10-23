@@ -8,8 +8,10 @@ import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.dto.response.UserSaveResponseDto;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
+import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
+import com.depromeet.omobackend.security.jwt.JwtTokenProvider;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import com.depromeet.omobackend.util.ImageUploadUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+    @Value("${jwt.exp.refresh}")
+    private Long refreshExp;
 
     public static final String MD_5 = "MD5";
     public static final String UTF_8 = "UTF-8";
@@ -36,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${profile.upload.directory}")
     private String profileUploadPath;
@@ -52,12 +58,15 @@ public class UserServiceImpl implements UserService {
         String uploadDir = profileUploadPath + savedUser.getId();
         ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
 
-        // TODO Token 처리 필요
-        UserSaveResponseDto userSaveResponseDto = new UserSaveResponseDto();
-        userSaveResponseDto.setNickname(savedUser.getNickname());
-        userSaveResponseDto.setProfileUrl(savedUser.getProfileUrl());
+        String access = jwtTokenProvider.generateAccessToken(email);
+        String refresh = jwtTokenProvider.generateRefreshToken(email);
+        refreshTokenRepository.save(new RefreshToken(email, refresh, refreshExp*60));
 
-        return userSaveResponseDto;
+        return UserSaveResponseDto.builder()
+                .email(email)
+                .access(access)
+                .refresh(refresh)
+                .build();
     }
 
     @Override
