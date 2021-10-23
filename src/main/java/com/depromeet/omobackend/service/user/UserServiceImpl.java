@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     @Value("${jwt.exp.refresh}")
-    private Long refreshExp;
+    private long refreshExp;
 
     public static final String MD_5 = "MD5";
     public static final String UTF_8 = "UTF-8";
