@@ -24,7 +24,7 @@ public class Stamp {
     @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate receiptIssuanceDate;  // 영수증 발급 날짜
 
     @Column(nullable = false)
