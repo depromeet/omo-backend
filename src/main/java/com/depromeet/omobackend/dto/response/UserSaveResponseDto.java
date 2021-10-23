@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSaveResponseDto {
+    private String email;
 
-    private String nickname;
-    private String profileUrl;
+    private String access;
+    private String refresh;
 }
