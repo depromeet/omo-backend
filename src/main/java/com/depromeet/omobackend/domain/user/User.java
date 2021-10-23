@@ -72,4 +72,8 @@ public class User {
         return this.role.getKey();
     }
 
+    public void lastStampDateUpdate(LocalDate lastStampDate) {
+        this.lastStampDate = lastStampDate;
+    }
+
 }

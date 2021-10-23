@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,6 +25,9 @@ public class Stamp {
     private LocalDateTime createdDate;
 
     @Column(nullable = false)
+    private LocalDate receiptIssuanceDate;  // 영수증 발급 날짜
+
+    @Column(nullable = false)
     private Boolean isCertified;
 
     @Column(nullable = false)
@@ -39,9 +42,10 @@ public class Stamp {
     private Omakase omakase;
 
     @Builder
-    public Stamp(String fileUrl, User user, Omakase omakase) {
+    public Stamp(LocalDate receiptIssuanceDate, String fileUrl, User user, Omakase omakase) {
         this.createdDate = LocalDateTime.now();
         this.isCertified = false;
+        this.receiptIssuanceDate = receiptIssuanceDate;
         this.fileUrl = fileUrl;
         this.user = user;
         this.omakase = omakase;

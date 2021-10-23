@@ -6,9 +6,11 @@ import com.depromeet.omobackend.dto.request.StampUpdateRequestDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public interface StampService {
     String saveReceipt(MultipartFile receiptImageFile) throws IOException;
-    Stamp saveStamp(StampSaveRequestDto requestDto);
+    Stamp saveStamp(Long omakaseId, LocalDate receiptIssuanceDate, StampSaveRequestDto requestDto);
+
     Long isCertifiedUpdate(Long id, StampUpdateRequestDto requestDto);
 }

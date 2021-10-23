@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -77,6 +78,12 @@ public class UserServiceImpl implements UserService {
         checkNickname(nickname);
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
+    }
+
+    @Override
+    public void modifyLastStampDate(LocalDate lastStampDate) {
+        User user = authenticationUtil.getUser();
+        user.lastStampDateUpdate(lastStampDate);
     }
 
     @Transactional(readOnly = true)
