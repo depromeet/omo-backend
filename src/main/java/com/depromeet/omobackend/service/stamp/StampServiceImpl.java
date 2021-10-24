@@ -54,18 +54,24 @@ public class StampServiceImpl implements StampService {
             requestDto.setOmakase(omakase);
         }
 
-        // User의 lastStampDate Update
-        userService.modifyLastStampDate(receiptIssuanceDate);
-
         return stampRepository.save(requestDto.toEntity());
     }
 
+    /**
+     * 관리자가 도장을 인증하는 메서드
+     * @param id
+     * @param requestDto
+     * @return
+     */
     @Override
     @Transactional
     public Long isCertifiedUpdate(Long id, StampUpdateRequestDto requestDto) {
         Stamp stamp = stampRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stamp is Not Found. id=" + id));
-        stamp.update(true);
+        LocalDate receiptIssuanceDate = requestDto.getReceiptIssuanceDate();
+
+        stamp.update(true, receiptIssuanceDate);
+        userService.updateLastStampDate(receiptIssuanceDate);  // User의 lastStampDate Update
         return id;
     }
 }

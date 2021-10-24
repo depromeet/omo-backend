@@ -51,7 +51,8 @@ public class Stamp {
         this.omakase = omakase;
     }
 
-    public void update(Boolean isCertified) {
+    public void update(Boolean isCertified, LocalDate receiptIssuanceDate) {
         this.isCertified = isCertified;
+        this.receiptIssuanceDate = receiptIssuanceDate;
     }
 }

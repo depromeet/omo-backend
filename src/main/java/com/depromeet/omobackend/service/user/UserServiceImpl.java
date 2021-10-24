@@ -91,9 +91,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyLastStampDate(LocalDate lastStampDate) {
+    public void updateLastStampDate(LocalDate lastStampDate) {
         User user = authenticationUtil.getUser();
-        user.lastStampDateUpdate(lastStampDate);
+        LocalDate userCurrentStampDate = user.getLastStampDate();
+        user.lastStampDateUpdate(userCurrentStampDate, lastStampDate);
     }
 
     @Transactional(readOnly = true)
