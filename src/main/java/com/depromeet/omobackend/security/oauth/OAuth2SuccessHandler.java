@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     @Value("${jwt.exp.refresh}")
-    private Long refreshExp;
+    private long refreshExp;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
