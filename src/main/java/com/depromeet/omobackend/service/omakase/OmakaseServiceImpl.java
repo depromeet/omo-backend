@@ -29,10 +29,12 @@ public class OmakaseServiceImpl implements OmakaseService {
     private final AuthenticationUtil authenticationUtil;
 
     @Override
-    public OmakaseSearchResultResponse searchOmakase(String level, String keyword) {
+    public OmakaseSearchResultResponse searchOmakases(String level, String keyword) {
         authenticationUtil.getUser();
-        List<OmakaseSearchResultDto> omakases =
-                omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), "%"+keyword+"%").stream()
+        List<OmakaseSearchResultDto> omakases;
+        if (level != null) omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), "%"+keyword+"%").stream()
+                .map(this::omakaseSearchResult).collect(Collectors.toList());
+        else omakases = omakaseRepository.findDistinctByNameLikeAndCountyLike(keyword).stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
 
         return OmakaseSearchResultResponse.builder()
