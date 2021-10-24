@@ -108,6 +108,14 @@ public class UserControllerTest {
         ).andExpect(status().isOk()).andDo(print());
     }
 
+    @WithMockUser(value = "test@gmail.com")
+    @Test
+    public void getMyOmakases() throws Exception {
+        mvc.perform(get("/my-omakase")
+        ).andDo(print())
+                .andExpect(status().isOk()).andDo(print());
+    }
+
     /*@DisplayName("회원 가입 테스트")
     @Test
     @WithAnonymousUser  // 스프링 시큐리티가 적용된 상태에서 테스트 코드를 돌리기 위한 MockUser

@@ -2,21 +2,16 @@ package com.depromeet.omobackend.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserSaveResponseDto {
+    private String email;
 
-    private String nickname;
-
-    private String profileUrl;
-
-    private Integer stampCount;
-
-    private Integer power;
-
+    private String access;
+    private String refresh;
 }

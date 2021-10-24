@@ -25,8 +25,8 @@ public class RankingController {
         return rankingService.getRankers(limit);
     }
 
-    @GetMapping(path = "/my-county-ranking")
-    public RankingInCountyDto getMyCountyRanking() {
-        return rankingService.getMyCountyRanking();
-    }
+//    @GetMapping(path = "/my-county-ranking")
+//    public RankingInCountyDto getMyCountyRanking() {
+//        return rankingService.getMyCountyRanking();
+//    }
 }
