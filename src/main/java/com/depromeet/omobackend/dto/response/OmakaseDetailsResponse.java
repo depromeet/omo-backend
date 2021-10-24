@@ -13,6 +13,8 @@ public class OmakaseDetailsResponse {
 
     private Boolean isRecommendation;
 
+    private Boolean isCertification;
+
     private String imageUrl;
 
     private String name;

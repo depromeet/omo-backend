@@ -2,6 +2,7 @@ package com.depromeet.omobackend.service.omakase;
 
 import com.depromeet.omobackend.domain.omakase.Level;
 import com.depromeet.omobackend.domain.omakase.Omakase;
+import com.depromeet.omobackend.domain.stamp.Stamp;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakaseDetailsResponse;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultDto;
@@ -9,6 +10,7 @@ import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
 import com.depromeet.omobackend.exception.OmakaseNotFoundException;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
 import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
+import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class OmakaseServiceImpl implements OmakaseService {
 
     private final OmakaseRepository omakaseRepository;
     private final RecommendationRepository recommendationRepository;
+    private final StampRepository stampRepository;
 
     private final AuthenticationUtil authenticationUtil;
 
@@ -55,6 +58,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .businessHours(omakase.getBusinessHours())
                 .isRecommendation(recommendationRepository.findByUserAndOmakase(user, omakase).isPresent())
                 .recommendationCount(omakase.getRecommendationCount())
+                .isCertification(getCertification(user, omakase))
                 .build();
     }
 
@@ -67,6 +71,14 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .level(omakase.getLevel().getName())
                 .imageUrl(omakase.getPhotoUrl())
                 .build();
+    }
+
+    private Boolean getCertification(User user, Omakase omakase) {
+        Stamp stamp = stampRepository.findByUserAndOmakase(user, omakase)
+                .orElse(null);
+
+        if (stamp == null) return null;
+        else return stamp.getIsCertified();
     }
 
 }
