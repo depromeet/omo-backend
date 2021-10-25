@@ -72,4 +72,12 @@ public class User {
         return this.role.getKey();
     }
 
+    public void lastStampDateUpdate(LocalDate userCurrentStampDate, LocalDate lastStampDate) {
+        if (lastStampDate.isAfter(userCurrentStampDate)) {
+            this.lastStampDate = lastStampDate;
+        } else {
+            this.lastStampDate = userCurrentStampDate;
+        }
+    }
+
 }

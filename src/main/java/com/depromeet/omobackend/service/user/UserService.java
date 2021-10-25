@@ -7,6 +7,7 @@ import com.depromeet.omobackend.dto.response.UserSaveResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public interface UserService {
 
@@ -14,6 +15,7 @@ public interface UserService {
     void checkNicknameDuplicate(String nickname);
     void deleteAccount();
     void modifyNickname(String nickname);
+    void updateLastStampDate(LocalDate lastStampDate);
     UserInfoResponse getUserInfo(String email);
     MyOmakasesResponse getMyOmakases(String email);
 }

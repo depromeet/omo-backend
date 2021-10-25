@@ -44,6 +44,7 @@ CREATE TABLE `location`(
 CREATE TABLE `stamp`(
      `id` BIGINT NOT NULL AUTO_INCREMENT,
      `created_date` DATETIME NOT NULL,
+     `receipt_issuance_date` DATE,
      `is_certified` TINYINT(1) NOT NULL,
      `file_url` VARCHAR(255),
      `omakase_id` BIGINT NOT NULL,
