@@ -1,0 +1,29 @@
+version: "3"
+services:
+  redis:
+    image: redis:6.2
+    ports:
+      - 6379:6379
+    container_name: redis
+  mariadb:
+    image: mariadb:10.5
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${DB_URL}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+    container_name: mariadb
+  spring:
+    image: devvhubb/omo:latest
+    ports:
+      - 8080:8080
+    container_name: spring
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ACCESS_EXP=${JWT_ACCESS_EXP}
+      - JWT_REFRESH_EXP=${JWT_REFRESH_EXP}
