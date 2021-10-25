@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Receipt Upload Test</title>
+</head>
+<body>
+<!-- 영수증 이미지 업로드 테스트 -->
+<form name="form" method="post" action="http://localhost:8080/stamp" enctype="multipart/form-data">
+    <p>
+        <label> Receipt: </label>
+        <input type="file" name="receiptImage" accept="image/png, image/jpeg, image/jpg"/>
+    </p>
+    <input type="submit" id="submit" value="전송" />
+</form>
+<img th:src="/@{${receiptImage}}" />
+</body>
+</html>

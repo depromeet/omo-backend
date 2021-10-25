@@ -3,6 +3,7 @@ package com.depromeet.omobackend.domain.stamp;
 import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.user.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,18 +15,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "omakase_id"}))
 public class Stamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    @NotNull
+    @Column(nullable = false)
     private Boolean isCertified;
 
-    @NotNull
+    @Column(nullable = false)
     private String fileUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,6 +38,7 @@ public class Stamp {
     @JoinColumn(name = "omakase_id", nullable = false)
     private Omakase omakase;
 
+    @Builder
     public Stamp(String fileUrl, User user, Omakase omakase) {
         this.createdDate = LocalDateTime.now();
         this.isCertified = false;
@@ -44,4 +47,7 @@ public class Stamp {
         this.omakase = omakase;
     }
 
+    public void update(Boolean isCertified) {
+        this.isCertified = isCertified;
+    }
 }

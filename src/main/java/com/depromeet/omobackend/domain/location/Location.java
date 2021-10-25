@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
@@ -19,12 +18,10 @@ public class Location {
     @Id
     private Long omakaseId;
 
-    @NotNull
-    @Column(columnDefinition = "decimal(15, 10)")
+    @Column(columnDefinition = "decimal(15, 10)", nullable = false)
     private BigDecimal latitude;
 
-    @NotNull
-    @Column(columnDefinition = "decimal(15, 10)")
+    @Column(columnDefinition = "decimal(15, 10)", nullable = false)
     private BigDecimal longitude;
 
     @MapsId

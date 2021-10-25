@@ -43,7 +43,7 @@ public class JwtTokenProvider {
         return generateToken(email, "refresh", refreshExp);
     }
 
-    private String generateToken(String email, String type, Long exp) {
+    public String generateToken(String email, String type, Long exp) {
         return Jwts.builder()
                 .setHeaderParam("typ", type)
                 .setIssuedAt(new Date())
