@@ -5,6 +5,7 @@ import com.depromeet.omobackend.domain.stamp.Stamp;
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.request.StampSaveRequestDto;
 import com.depromeet.omobackend.dto.request.StampUpdateRequestDto;
+import com.depromeet.omobackend.dto.response.StampsCountResponseDto;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.service.user.UserService;
@@ -32,9 +33,30 @@ public class StampServiceImpl implements StampService {
     @Value("${receipt.upload.directory}")
     private String receiptUploadPath;
 
+    /**
+     * User 닉네임과 인증된 도장 카운트 개수만 조회할 때 사용
+     * @return
+     */
+    @Override
+    public StampsCountResponseDto getStampCount() {
+        User user = authenticationUtil.getUser();
+        Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
+        StampsCountResponseDto stampsCountResponseDto = StampsCountResponseDto.builder()
+                .nickname(user.getNickname())
+                .profileUrl(user.getProfileUrl())
+                .stampCount(stampCount)
+                .build();
+        return stampsCountResponseDto;
+    }
+
+    /**
+     * 업로드한 레시피 영수증 파일 저장
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
     @Override
     public String saveReceipt(MultipartFile multipartFile) throws IOException {
-        // 업로드한 레시피 영수증 파일 저장
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         String uploadDir = receiptUploadPath + fileName;
         ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);

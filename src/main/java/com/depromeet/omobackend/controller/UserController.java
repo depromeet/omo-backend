@@ -31,16 +31,33 @@ public class UserController {
     public static final String STATUS = "status";
     private final UserService userService;
 
+    /**
+     * 회원 정보 조회
+     * @param email
+     * @return userInfoResponse
+     */
     @GetMapping({"/user/{email}", "/user"})
     public UserInfoResponse getUserInfo(@PathVariable(required = false) String email) {
         return userService.getUserInfo(email);
     }
 
+    /**
+     * My Omakase 조회
+     * @param email
+     * @return
+     */
     @GetMapping({"/my-omakase/{email}", "/my-omakase"})
     public MyOmakasesResponse getMyOmakases(@PathVariable(required = false) String email) {
         return userService.getMyOmakases(email);
     }
 
+    /**
+     * 회원 가입
+     * @param requestDto
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
     @PostMapping(value = "/user")
     public ResponseEntity<UserSaveResponseDto> save(UserSaveRequestDto requestDto,
                                                     @RequestParam("image") MultipartFile multipartFile) throws IOException {
@@ -48,23 +65,37 @@ public class UserController {
         return new ResponseEntity<>(userSaveResponseDto, HttpStatus.OK);
     }
 
+    /**
+     * 회원 닉네임 중복 체크
+     * @param nickname
+     */
     @GetMapping("/user/check")
     public void checkNicknameDuplicate(@RequestParam String nickname) {
         userService.checkNicknameDuplicate(nickname);
     }
 
+    /**
+     * 회원 삭제
+     */
     @DeleteMapping("/user")
     public void deleteAccount() {
         userService.deleteAccount();
     }
 
+    /**
+     * 회원 닉네임 변경
+     * @param request
+     */
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/user")
     public void modifyNickname(@RequestBody @Valid ModifyNicknameRequest request) {
         userService.modifyNickname(request.getNickname());
     }
 
-    // TODO: 프로필 이미지 업로드 테스트를 위한 HTML File. 테스트 이후 삭제 예정
+    /**
+     * Profile Upload 테스트 화면. 추후 삭제 예정
+     * @return
+     */
     @GetMapping("/profile")
     public ModelAndView getTestPage() {
         ModelAndView mv = new ModelAndView();
