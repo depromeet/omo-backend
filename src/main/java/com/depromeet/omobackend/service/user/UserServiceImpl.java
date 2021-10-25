@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserSaveResponseDto saveAccount(UserSaveRequestDto requestDto, MultipartFile multipartFile) throws IOException {
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         String email = requestDto.getEmail();
         String hashFileName = getHashingFileName(email, fileName);
         requestDto.setProfileUrl(hashFileName);
@@ -87,6 +89,13 @@ public class UserServiceImpl implements UserService {
         checkNickname(nickname);
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
+    }
+
+    @Override
+    public void updateLastStampDate(LocalDate lastStampDate) {
+        User user = authenticationUtil.getUser();
+        LocalDate userCurrentStampDate = user.getLastStampDate();
+        user.lastStampDateUpdate(userCurrentStampDate, lastStampDate);
     }
 
     @Transactional(readOnly = true)
@@ -151,9 +160,7 @@ public class UserServiceImpl implements UserService {
             MessageDigest md = MessageDigest.getInstance(MD_5);
             md.update(email.getBytes(UTF_8), 0, email.length());
             return new BigInteger(1, md.digest()).toString(16) + fileName;
-        } catch (NoSuchAlgorithmException e) {
-            return fileName;
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             return fileName;
         }
     }

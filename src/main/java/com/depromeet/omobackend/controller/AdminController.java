@@ -17,7 +17,12 @@ public class AdminController {
 
     private final StampService stampService;
 
-    // 관리자 도장 인증 수락
+    /**
+     * 관리자 도장 인증 수락
+     * @param id
+     * @param requestDto
+     * @return
+     */
     @PutMapping("/stamp/{id}")
     public Long update(@PathVariable Long id, @RequestBody StampUpdateRequestDto requestDto) {
         return stampService.isCertifiedUpdate(id, requestDto);

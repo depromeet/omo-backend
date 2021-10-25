@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @RequiredArgsConstructor
@@ -22,9 +23,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
         http
                 .csrf().disable()
                 .formLogin().disable()
+                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.GET, "/user/check/**").permitAll()
+                    .antMatchers("/user").permitAll()
+                    .antMatchers("/profile").permitAll()
+                    .antMatchers("/oauth2/authorization/**").permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
@@ -35,6 +40,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .successHandler(oAuth2SuccessHandler)
                     .permitAll()
         ;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("*");
     }
 
 }

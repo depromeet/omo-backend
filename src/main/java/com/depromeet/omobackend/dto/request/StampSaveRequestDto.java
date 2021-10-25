@@ -7,16 +7,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 public class StampSaveRequestDto {
-
+    private LocalDate receiptIssuanceDate; // 영수증 발급일
     private String fileUrl;
     private User user;
     private Omakase omakase;
 
     @Builder
-    public StampSaveRequestDto(String fileUrl, User user, Omakase omakase) {
+    public StampSaveRequestDto(LocalDate receiptIssuanceDate, String fileUrl,
+                               User user, Omakase omakase) {
+        this.receiptIssuanceDate = receiptIssuanceDate;
         this.fileUrl = fileUrl;
         this.user = user;
         this.omakase = omakase;
@@ -24,6 +28,7 @@ public class StampSaveRequestDto {
 
     public Stamp toEntity() {
         return Stamp.builder()
+                .receiptIssuanceDate(receiptIssuanceDate)
                 .fileUrl(fileUrl)
                 .user(user)
                 .omakase(omakase)
