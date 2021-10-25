@@ -27,6 +27,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ACCESS_EXP=${JWT_ACCESS_EXP}
       - JWT_REFRESH_EXP=${JWT_REFRESH_EXP}
+      - BASE_URL=${BASE_URL}
+      - BASE_PORT=${BASE_PORT}
     depends_on:
       - redis
       - mariadb
