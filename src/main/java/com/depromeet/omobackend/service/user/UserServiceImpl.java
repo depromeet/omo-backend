@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -88,6 +89,13 @@ public class UserServiceImpl implements UserService {
         checkNickname(nickname);
         User user = authenticationUtil.getUser();
         userRepository.save(user.modifyNickname(nickname));
+    }
+
+    @Override
+    public void updateLastStampDate(LocalDate lastStampDate) {
+        User user = authenticationUtil.getUser();
+        LocalDate userCurrentStampDate = user.getLastStampDate();
+        user.lastStampDateUpdate(userCurrentStampDate, lastStampDate);
     }
 
     @Transactional(readOnly = true)
