@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: CI with Gradle & CD with Docker
 
 on:
   push:
@@ -20,8 +20,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
-      
+      run: ./gradlew clean build
+
     - uses: mr-smithers-excellent/docker-build-push@v5
       name: Build & push Docker image
       with:
