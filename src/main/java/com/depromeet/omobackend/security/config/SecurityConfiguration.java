@@ -29,6 +29,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .antMatchers(HttpMethod.GET, "/user/check/**").permitAll()
                     .antMatchers("/user").permitAll()
                     .antMatchers("/profile").permitAll()
+                    .antMatchers("/oauth2/code/naver").permitAll()
+                    .antMatchers("/login/oauth2/code/kakao").permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
