@@ -32,7 +32,7 @@ services:
       - NAVER_ID=${NAVER_ID}
       - NAVER_SECRET=${NAVER_SECRET}
       - KAKAO_ID=${KAKAO_ID}
-      - KAKAO_SECRET={KAKAO_SECRET}
+      - KAKAO_SECRET=${KAKAO_SECRET}
     depends_on:
       - redis
       - mariadb
