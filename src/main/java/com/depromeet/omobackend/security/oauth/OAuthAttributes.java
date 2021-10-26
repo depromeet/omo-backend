@@ -8,8 +8,8 @@ import java.util.Map;
 
 @Getter
 public class OAuthAttributes {
-    private final Map<String, Object> attributes;
-    private final String nameAttributeKey;
+    private Map<String, Object> attributes;
+    private gString nameAttributeKey;
 
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey) {
         this.attributes = attributes;
