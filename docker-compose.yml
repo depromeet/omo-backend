@@ -29,6 +29,10 @@ services:
       - JWT_REFRESH_EXP=${JWT_REFRESH_EXP}
       - BASE_URL=${BASE_URL}
       - BASE_PORT=${BASE_PORT}
+      - NAVER_ID=${NAVER_ID}
+      - NAVER_SECRET=${NAVER_SECRET}
+      - KAKAO_ID=${KAKAO_ID}
+      - KAKAO_SECRET={KAKAO_SECRET}
     depends_on:
       - redis
       - mariadb
