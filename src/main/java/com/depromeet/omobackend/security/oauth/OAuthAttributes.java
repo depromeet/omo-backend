@@ -28,7 +28,7 @@ public class OAuthAttributes {
             Map<String, Object> response = (Map<String, Object>) attributes.get("response");
             Map<String, Object> newAttributes = new HashMap<>(attributes);
             newAttributes.put("email", response.get("email"));
-            return new OAuthAttributes(attributes,
+            return new OAuthAttributes(newAttributes,
                     userNameAttributeName);
         }
         else {
