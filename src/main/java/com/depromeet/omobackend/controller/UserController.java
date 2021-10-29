@@ -7,6 +7,7 @@ import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.dto.response.UserSaveResponseDto;
 import com.depromeet.omobackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,8 +29,10 @@ import java.io.IOException;
 @RestController
 public class UserController {
 
-    public static final String STATUS = "status";
     private final UserService userService;
+
+    @Value("${profile.upload.directory}")
+    private String profileUploadPath;
 
     /**
      * 회원 정보 조회
@@ -66,6 +69,18 @@ public class UserController {
     }
 
     /**
+     * 회원 프로필 이미지 조회
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/user/profile")
+    public ResponseEntity<byte[]> userProfileView(String email) throws Exception {
+        ResponseEntity<byte[]> entity = userService.getProfileView(email);
+        return entity;
+    }
+
+
+    /**
      * 회원 닉네임 중복 체크
      * @param nickname
      */
@@ -99,7 +114,7 @@ public class UserController {
     @GetMapping("/profile")
     public ModelAndView getTestPage() {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("profileTest.html");
+        mv.setViewName("sign-up.html");
         return mv;
     }
 }

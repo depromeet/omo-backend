@@ -16,19 +16,29 @@ import com.depromeet.omobackend.security.jwt.JwtTokenProvider;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import com.depromeet.omobackend.util.ImageUploadUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,9 +46,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     @Value("${jwt.exp.refresh}")
     private long refreshExp;
+    @Value("${profile.upload.directory}")
+    public String profileUploadPath;
 
     public static final String MD_5 = "MD5";
     public static final String UTF_8 = "UTF-8";
+    public static final String CONTENT_TYPE = "Content-type";
 
     private final UserRepository userRepository;
     private final StampRepository stampRepository;
@@ -46,20 +59,15 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Value("${profile.upload.directory}")
-    private String profileUploadPath;
-
     @Override
     @Transactional
     public UserSaveResponseDto saveAccount(UserSaveRequestDto requestDto, MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         String email = requestDto.getEmail();
-        String hashFileName = getHashingFileName(email, fileName);
-        requestDto.setProfileUrl(hashFileName);
-        User savedUser = userRepository.save(requestDto.toEntity());
+        String savedName = ImageUploadUtil.uploadFile(profileUploadPath, fileName, multipartFile.getBytes());
 
-        String uploadDir = profileUploadPath + savedUser.getId();
-        ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
+        requestDto.setProfileUrl(savedName);
+        userRepository.save(requestDto.toEntity());
 
         String access = jwtTokenProvider.generateAccessToken(email);
         String refresh = jwtTokenProvider.generateRefreshToken(email);
@@ -67,6 +75,7 @@ public class UserServiceImpl implements UserService {
 
         return UserSaveResponseDto.builder()
                 .email(email)
+                .profileUrl(savedName)
                 .access(access)
                 .refresh(refresh)
                 .build();
@@ -130,6 +139,29 @@ public class UserServiceImpl implements UserService {
                                     .build();
                         }).collect(Collectors.toList()))
         );
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getProfileView(String email) throws IOException {
+        InputStream in = null;
+        ResponseEntity<byte[]> entity;
+        User user = getUser(email);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            Path uploadPath = Paths.get(profileUploadPath);
+            String fileName = user.getProfileUrl();
+
+            File file = new File(uploadPath+"\\"+fileName);
+            headers.add(CONTENT_TYPE, Files.probeContentType(file.toPath()));
+            in = new FileInputStream(uploadPath+"\\"+fileName);
+            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+        } finally {
+            in.close();
+        }
+        return entity;
     }
 
     private User getUser(String email) {
