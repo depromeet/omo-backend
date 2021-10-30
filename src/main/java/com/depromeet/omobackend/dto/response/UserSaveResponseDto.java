@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserSaveResponseDto {
     private String email;
-
+    private String profileUrl;
     private String access;
     private String refresh;
 }

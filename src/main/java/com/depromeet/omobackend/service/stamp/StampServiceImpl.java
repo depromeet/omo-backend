@@ -59,7 +59,7 @@ public class StampServiceImpl implements StampService {
     public String saveReceipt(MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         String uploadDir = receiptUploadPath + fileName;
-        ImageUploadUtil.saveProfile(uploadDir, fileName, multipartFile);
+        ImageUploadUtil.uploadFile(uploadDir, fileName, multipartFile.getBytes());
         return fileName;
     }
 

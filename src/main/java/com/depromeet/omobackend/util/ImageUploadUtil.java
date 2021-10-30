@@ -1,29 +1,26 @@
 package com.depromeet.omobackend.util;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.FileCopyUtils;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 public class ImageUploadUtil {
 
-    public static void saveProfile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
-
+    public static String uploadFile(String profileUploadPath, String originalFilename,
+                                    byte[] fileData) throws IOException {
+        Path uploadPath = Paths.get(profileUploadPath);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
-
-        try (InputStream inputStream = multipartFile.getInputStream()) {
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ioe) {
-            throw new IOException("Could not Save Image file: " + fileName, ioe);
-        }
+        UUID uid = UUID.randomUUID();
+        String savedName = uid + "_" + originalFilename;
+        File target = new File(String.valueOf(uploadPath), savedName);
+        FileCopyUtils.copy(fileData, target);
+        return savedName;
     }
-
 }

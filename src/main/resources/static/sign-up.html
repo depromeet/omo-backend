@@ -9,15 +9,15 @@
 <!-- 회원 가입 및 프로필 이미지 업로드 테스트 -->
 <form name="form" method="post" action="http://localhost:8080/user" enctype="multipart/form-data">
     <p>
-        <label> Email: </label>
+        <label> email: </label>
         <input type="text" name="email" />
     </p>
     <p>
-        <label> NickName: </label>
+        <label> nickname: </label>
         <input type="text" name="nickname" />
     </p>
     <p>
-        <label> Profile: </label>
+        <label> Profile Image: </label>
         <input type="file" name="image" accept="image/png, image/jpeg, image/jpg"/>
     </p>
     <input type="submit" id="submit" value="전송" />
