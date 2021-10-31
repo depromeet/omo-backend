@@ -32,8 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .antMatchers("/login/oauth2/code/naver").permitAll()
                     .antMatchers("/login/oauth2/code/kakao").permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-//                    .anyRequest().authenticated()
-                    .anyRequest().permitAll()   // TODO: front REST API 연동 테스트를 위해 Security authorize 비활성화. 테스트 이후 활성화 예정
+                    .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
                     .userInfoEndpoint()
