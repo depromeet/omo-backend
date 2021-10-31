@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: CI with Gradle & CD with Docker
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-      
+
     - uses: mr-smithers-excellent/docker-build-push@v5
       name: Build & push Docker image
       with:
