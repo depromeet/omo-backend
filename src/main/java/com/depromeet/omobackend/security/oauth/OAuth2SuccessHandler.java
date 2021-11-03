@@ -72,7 +72,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             StringBuilder sb = new StringBuilder();
             sb.append(redirectJoinUrl)
-                    .append("?status=").append("singOn")
+                    .append("?status=").append("signOn")
                     .append("?email=").append(email);
             targetUrl = sb.toString();
         }
