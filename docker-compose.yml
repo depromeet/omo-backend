@@ -33,6 +33,8 @@ services:
       - NAVER_SECRET=${NAVER_SECRET}
       - KAKAO_ID=${KAKAO_ID}
       - KAKAO_SECRET=${KAKAO_SECRET}
+      - PROFILE_DIRECTORY=${PROFILE_DIRECTORY}
+      - RECEIPT_DIRECTORY=${RECEIPT_DIRECTORY}
     depends_on:
       - redis
       - mariadb
