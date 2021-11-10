@@ -64,10 +64,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         try {
             String bearerToken = request.getHeader(HEADER);
-//            if (bearerToken != null && bearerToken.startsWith(PREFIX) && validateToken(bearerToken)) {
-//                return bearerToken.substring(7);
-//            }
-            if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
+            if (bearerToken != null && bearerToken.startsWith(PREFIX) && validateToken(bearerToken)) {
                 return bearerToken.substring(7);
             }
             return null;

@@ -1,7 +1,5 @@
 package com.depromeet.omobackend.security.config;
 
-import com.depromeet.omobackend.security.jwt.JwtTokenProvider;
-import com.depromeet.omobackend.security.jwt.TokenFilter;
 import com.depromeet.omobackend.security.oauth.OAuth2SuccessHandler;
 import com.depromeet.omobackend.security.oauth.OmoOAuthService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,7 +17,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 
     private final OmoOAuthService omoOauthService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,7 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .successHandler(oAuth2SuccessHandler)
                     .permitAll()
         ;
-        http.addFilterBefore(new TokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
