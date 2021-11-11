@@ -55,8 +55,7 @@ public class Omakase {
     @Column(nullable = false)
     private Long recommendationCount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 10)
+    @Column(columnDefinition = "enum('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')")
     private Holiday holiday;
 
     @OneToMany(mappedBy = "omakase", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

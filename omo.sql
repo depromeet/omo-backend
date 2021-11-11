@@ -29,7 +29,7 @@ CREATE TABLE `omakase`(
     `price_information` VARCHAR(100),
     `business_hours` VARCHAR(100),
     `recommendation_count` BIGINT NOT NULL,
-    `holiday` VARCHAR(10),
+    `holiday` ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'),
     PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
