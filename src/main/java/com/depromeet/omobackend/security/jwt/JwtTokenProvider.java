@@ -48,7 +48,7 @@ public class JwtTokenProvider {
                 .setHeaderParam("typ", type)
                 .setIssuedAt(new Date())
                 .setSubject(email)
-                .setExpiration(new Date(System.currentTimeMillis() + exp * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + exp * 1000 * 30))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
@@ -64,7 +64,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         try {
             String bearerToken = request.getHeader(HEADER);
-            if (bearerToken != null && bearerToken.startsWith(PREFIX) && validateToken(bearerToken)) {
+            if (bearerToken != null && bearerToken.startsWith(PREFIX) && validateToken(bearerToken.substring(7))) {
                 return bearerToken.substring(7);
             }
             return null;
