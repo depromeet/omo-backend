@@ -83,7 +83,7 @@ public class OmakaseControllerTest {
     @Test
     public void searchOmakase() throws Exception {
         mvc.perform(get("/omakases")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test@gmail.com")
@@ -92,7 +92,7 @@ public class OmakaseControllerTest {
         mvc.perform(get("/omakases")
                 .param("level","HIGH")
                 .param("keyword","수지구")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test@gmail.com")
@@ -121,7 +121,6 @@ public class OmakaseControllerTest {
                         .address("경기도 용인시 수지구 죽전동 몰라몰라 상가")
                         .county(county)
                         .phoneNumber("03211110000")
-                        .photoUrl("asdf")
                         .description("12년 전통 오마카세")
                         .businessHours("점심: 11:00~13:30 / 저녁: 18:00~20:30")
                         .priceInformation("점심: 98,000 / 저녁: 130,000")
