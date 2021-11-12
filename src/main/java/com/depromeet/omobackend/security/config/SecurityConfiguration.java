@@ -38,6 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "test").permitAll()
                     .antMatchers(HttpMethod.GET, "/user/check/**").permitAll()
                     .antMatchers("/user").permitAll()
                     .antMatchers("/profile").permitAll()
