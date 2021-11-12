@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OmakaseController {
 
     private final OmakaseService omakaseService;
