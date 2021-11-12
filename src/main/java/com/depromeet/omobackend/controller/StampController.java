@@ -20,7 +20,6 @@ import java.time.LocalDate;
  */
 @RequiredArgsConstructor
 @Controller
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class StampController {
 
     private final StampService stampService;

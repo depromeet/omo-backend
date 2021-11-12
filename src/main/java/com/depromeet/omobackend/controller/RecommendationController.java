@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
