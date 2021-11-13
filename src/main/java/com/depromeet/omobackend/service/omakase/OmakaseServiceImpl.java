@@ -13,6 +13,7 @@ import com.depromeet.omobackend.repository.recommendation.RecommendationReposito
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,12 +30,13 @@ public class OmakaseServiceImpl implements OmakaseService {
     private final AuthenticationUtil authenticationUtil;
 
     @Override
-    public OmakaseSearchResultResponse searchOmakases(String level, String keyword) {
+    public OmakaseSearchResultResponse searchOmakases(Pageable page, String level, String keyword) {
         authenticationUtil.getUser();
         List<OmakaseSearchResultDto> omakases;
-        if (level != null) omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), "%"+keyword+"%").stream()
+
+        if (level != null) omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), "%"+keyword+"%", page).stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
-        else omakases = omakaseRepository.findDistinctByNameLikeAndCountyLike(keyword).stream()
+        else omakases = omakaseRepository.findDistinctByNameLikeAndCountyLike(keyword, page).stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
 
         return OmakaseSearchResultResponse.builder()

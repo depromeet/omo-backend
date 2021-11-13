@@ -4,6 +4,7 @@ import com.depromeet.omobackend.dto.response.OmakaseDetailsResponse;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
 import com.depromeet.omobackend.service.omakase.OmakaseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,9 +16,10 @@ public class OmakaseController {
 
     @GetMapping("/omakases")
     public OmakaseSearchResultResponse searchOmakases(
+            Pageable page,
             @RequestParam(required = false) String level,
             @RequestParam(defaultValue = "%") String keyword) {
-        return omakaseService.searchOmakases(level, keyword);
+        return omakaseService.searchOmakases(page, level, keyword);
     }
 
     @GetMapping("/omakase/{id}")

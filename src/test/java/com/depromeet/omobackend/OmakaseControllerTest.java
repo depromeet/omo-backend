@@ -82,14 +82,14 @@ public class OmakaseControllerTest {
     @WithMockUser(value = "test@gmail.com")
     @Test
     public void searchOmakase() throws Exception {
-        mvc.perform(get("/omakases")
+        mvc.perform(get("/omakases?size=2&page=1")
         ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test@gmail.com")
     @Test
     public void searchOmakase2() throws Exception {
-        mvc.perform(get("/omakases")
+        mvc.perform(get("/omakases?size=2&page=0")
                 .param("level","HIGH")
                 .param("keyword","수지구")
         ).andExpect(status().isOk()).andDo(print());
@@ -98,7 +98,7 @@ public class OmakaseControllerTest {
     @WithMockUser(value = "test@gmail.com")
     @Test
     public void searchOmakase3() throws Exception {
-        mvc.perform(get("/omakases")
+        mvc.perform(get("/omakases?size=2&page=0")
                 .param("level","ENTRY")
                 .param("keyword","처인구")
         ).andExpect(status().isOk()).andDo(print());
