@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
         return UserInfoResponse.builder()
                 .nickname(user.getNickname())
-                .profileUrl(user.getProfileUrl())
+                .profileUrl(profileUploadPath + user.getProfileUrl())
                 .stampCount(stampCount)
                 .power(getPower(stampCount))
                 .build();
