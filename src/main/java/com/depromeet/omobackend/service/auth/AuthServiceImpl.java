@@ -16,8 +16,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout() {
         try{
-            System.out.println(authenticationUtil.getUserEmail());
-            refreshTokenRepository.deleteById(authenticationUtil.getUserEmail());
+            refreshTokenRepository.findById(authenticationUtil.getUserEmail())
+                    .ifPresent(refreshTokenRepository::delete);
         } catch(Exception e) {
             e.printStackTrace();
             throw new UserNotAuthenticatedException();
