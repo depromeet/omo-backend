@@ -75,7 +75,6 @@ public class StampServiceImpl implements StampService {
             requestDto.setUser(user);
             requestDto.setOmakase(omakase);
         }
-
         return stampRepository.save(requestDto.toEntity());
     }
 

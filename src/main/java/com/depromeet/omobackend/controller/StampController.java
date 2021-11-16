@@ -1,5 +1,6 @@
 package com.depromeet.omobackend.controller;
 
+import com.depromeet.omobackend.dto.request.OmakasesRequestDto;
 import com.depromeet.omobackend.dto.request.StampSaveRequestDto;
 import com.depromeet.omobackend.dto.response.StampsCountResponseDto;
 import com.depromeet.omobackend.service.stamp.StampService;
@@ -7,12 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 
 /**
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 @Controller
 public class StampController {
 
+    public static final String SUCCESS = "SUCCESS";
     private final StampService stampService;
 
     /**
@@ -34,23 +37,21 @@ public class StampController {
     }
 
     /**
-     * 도장 등록 (미인증 상태)
-     * @param omakaseId (오마카세 ID)
-     * @param receiptIssuanceDate (영수증 발급 날짜)
-     * @param multipartFile (영수증 사진)
+     * Stamp 등록
+     * @param omakasesRequestDto
+     * @param multipartFile
      * @return
      * @throws IOException
      */
     @PostMapping("/stamp")
-    public ResponseEntity<String> saveStamp(@PathVariable Long omakaseId, @PathVariable LocalDate receiptIssuanceDate,
-            @RequestParam("receiptImage") MultipartFile multipartFile) throws IOException {
-
+    public ResponseEntity<String> saveStamp(OmakasesRequestDto omakasesRequestDto,
+                                            @RequestParam("receiptImage") MultipartFile multipartFile) throws IOException {
         StampSaveRequestDto requestDto = new StampSaveRequestDto();
         String saveFileName = stampService.saveReceipt(multipartFile);
         requestDto.setFileUrl(saveFileName);
 
-        stampService.saveStamp(omakaseId, receiptIssuanceDate, requestDto);
-        return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        stampService.saveStamp(omakasesRequestDto.getOmakaseId(), omakasesRequestDto.getReceiptIssuanceDate(), requestDto);
+        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
 
     /**
