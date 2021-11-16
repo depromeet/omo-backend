@@ -5,7 +5,6 @@ import com.depromeet.omobackend.security.jwt.TokenFilter;
 import com.depromeet.omobackend.security.oauth.OAuth2SuccessHandler;
 import com.depromeet.omobackend.security.oauth.OmoOAuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
@@ -30,12 +28,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     private final OmoOAuthService omoOauthService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtTokenProvider jwtTokenProvider;
-
-    @Value("${profile.upload.path}")
-    private String profileUploadPath;
-
-    @Value("${profile.resource.path}")
-    private String resourcePath;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -64,12 +56,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .permitAll()
         ;
         http.addFilterBefore(new TokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(profileUploadPath)
-                .addResourceLocations(resourcePath);
     }
 
     @Bean
