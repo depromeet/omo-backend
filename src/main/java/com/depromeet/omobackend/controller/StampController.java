@@ -7,10 +7,10 @@ import com.depromeet.omobackend.service.stamp.StampService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
  * 도장 깨기
  */
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class StampController {
 
     public static final String SUCCESS = "SUCCESS";
@@ -31,7 +31,7 @@ public class StampController {
      * 회원 닉네임, 프로필 이미지, 도장 개수 조회
      * @return
      */
-    @GetMapping("/stamps-count")
+    @GetMapping("/stamp-count")
     public StampsCountResponseDto getStampsCount() {
         return stampService.getStampCount();
     }
