@@ -19,6 +19,8 @@ public class UserInfoResponse {
 
     private Integer stampCount;
 
+    private Long ranking;
+
     private Integer power;
 
 }

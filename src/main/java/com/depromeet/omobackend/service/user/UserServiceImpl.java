@@ -9,6 +9,7 @@ import com.depromeet.omobackend.dto.response.OmakasesDto;
 import com.depromeet.omobackend.dto.response.UserInfoResponse;
 import com.depromeet.omobackend.dto.response.UserSaveResponseDto;
 import com.depromeet.omobackend.exception.UserNicknameAlreadyExistsException;
+import com.depromeet.omobackend.repository.ranking.RankingRepository;
 import com.depromeet.omobackend.repository.refresh.RefreshTokenRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationUtil authenticationUtil;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RankingRepository rankingRepository;
 
     @Override
     @Transactional
@@ -117,6 +119,7 @@ public class UserServiceImpl implements UserService {
                 .nickname(user.getNickname())
                 .profileUrl(profileUploadPath + user.getProfileUrl())
                 .stampCount(stampCount)
+                .ranking(rankingRepository.getRankersMoreThanUserStamp(stampCount, user.getLastStampDate(), user.getNickname()) + 1)
                 .power(getPower(stampCount))
                 .build();
     }

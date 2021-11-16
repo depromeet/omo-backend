@@ -6,7 +6,7 @@ import com.depromeet.omobackend.dto.response.RankingInCountyDto;
 import java.util.List;
 
 public interface RankingService {
-    RankingDto getMyRanking();
+    //RankingDto getMyRanking();
     List<RankingDto> getRankers(int limit);
 //    RankingInCountyDto getMyCountyRanking();
 }

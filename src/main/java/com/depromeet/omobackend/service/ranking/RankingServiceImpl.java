@@ -20,7 +20,7 @@ public class RankingServiceImpl implements RankingService {
     private final StampRepository stampRepository;
     private final RankingRepository rankingRepository;
 
-    @Override
+    /*@Override
     public RankingDto getMyRanking() {
         User user = authenticationUtil.getUser();
         Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
@@ -31,7 +31,7 @@ public class RankingServiceImpl implements RankingService {
                 .profileUrl(user.getProfileUrl())
                 .build();
         return rankingDto;
-    }
+    }*/
 
     @Override
     public List<RankingDto> getRankers(int limit) {
