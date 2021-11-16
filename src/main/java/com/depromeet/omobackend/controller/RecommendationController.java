@@ -11,6 +11,11 @@ public class RecommendationController {
 
     private final RecommendationService recommendationService;
 
+    /**
+     * 좋아요 상태 업데이트
+     * @param omakaseId
+     * @return
+     */
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/recommendation/{id}")
     public boolean updateRecommendationStatus(@PathVariable("id") long omakaseId) {

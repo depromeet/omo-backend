@@ -37,7 +37,7 @@ public class StampController {
     }
 
     /**
-     * Stamp 등록
+     * Stamp 등록 (미인증 상태)
      * @param omakasesRequestDto
      * @param multipartFile
      * @return

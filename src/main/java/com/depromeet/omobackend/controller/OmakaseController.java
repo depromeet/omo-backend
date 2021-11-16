@@ -14,6 +14,13 @@ public class OmakaseController {
 
     private final OmakaseService omakaseService;
 
+    /**
+     * 오마카게 검색
+     * @param page
+     * @param level
+     * @param keyword
+     * @return
+     */
     @GetMapping("/omakases")
     public OmakaseSearchResultResponse searchOmakases(
             Pageable page,
@@ -22,6 +29,11 @@ public class OmakaseController {
         return omakaseService.searchOmakases(page, level, keyword);
     }
 
+    /**
+     * 오마카세 상세 정보
+     * @param id
+     * @return
+     */
     @GetMapping("/omakase/{id}")
     public OmakaseDetailsResponse getOmakase(@PathVariable long id) {
         return omakaseService.getOmakaseDetail(id);

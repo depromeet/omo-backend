@@ -14,11 +14,20 @@ import java.util.List;
 public class RankingController {
     private final RankingService rankingService;
 
+    /**
+     * 랭킹 조회
+     * @return
+     */
     @GetMapping(path = "/my-ranking")
     public RankingDto getMyRanking() {
         return rankingService.getMyRanking();
     }
 
+    /**
+     * 랭킹 목록 조회
+     * @param limit
+     * @return
+     */
     @GetMapping(path = "/rankers")
     public List<RankingDto> getRankers(@RequestParam(defaultValue = "10") int limit){
         return rankingService.getRankers(limit);

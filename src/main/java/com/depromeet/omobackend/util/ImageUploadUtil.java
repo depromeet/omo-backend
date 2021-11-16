@@ -21,6 +21,11 @@ public class ImageUploadUtil {
         String savedName = uid + "_" + originalFilename;
         File target = new File(String.valueOf(uploadPath), savedName);
         FileCopyUtils.copy(fileData, target);
+        // 파일 권한 적용
+        Runtime.getRuntime().exec("chmod -R 777 " + target);
+        target.setExecutable(true, false);
+        target.setReadable(true, false);
+        target.setWritable(true, false);
         return savedName;
     }
 }

@@ -11,6 +11,9 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * 로그아웃
+     */
     @DeleteMapping("/logout")
     public void logout() {
         authService.logout();
