@@ -14,15 +14,7 @@ import java.util.List;
 public class RankingController {
     private final RankingService rankingService;
 
-<<<<<<< Updated upstream
-    /**
-     * 랭킹 조회
-     * @return
-     */
-    @GetMapping(path = "/my-ranking")
-=======
     /*@GetMapping(path = "/my-ranking")
->>>>>>> Stashed changes
     public RankingDto getMyRanking() {
         return rankingService.getMyRanking();
     }*/
