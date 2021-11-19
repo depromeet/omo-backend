@@ -49,8 +49,6 @@ public class UserServiceImpl implements UserService {
     private long refreshExp;
     @Value("${profile.upload.directory}")
     public String profileUploadPath;
-    @Value("${profile.url.path}")
-    public String profileUrlPath;
 
     public static final String MD_5 = "MD5";
     public static final String UTF_8 = "UTF-8";
@@ -119,7 +117,7 @@ public class UserServiceImpl implements UserService {
 
         return UserInfoResponse.builder()
                 .nickname(user.getNickname())
-                .profileUrl(profileUrlPath + user.getProfileUrl())
+                .profileUrl(profileUploadPath + user.getProfileUrl())
                 .stampCount(stampCount)
                 .ranking(rankingRepository.getRankersMoreThanUserStamp(stampCount, user.getLastStampDate(), user.getNickname()) + 1)
                 .power(getPower(stampCount))

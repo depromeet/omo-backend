@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
@@ -58,11 +59,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
         http.addFilterBefore(new TokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/workspace/omo-backend/images/profile/**")
-//                .addResourceLocations("file:///workspace/omo-backend/images/profile/");
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/workspace/omo-backend/images/profile/**")
+                .addResourceLocations("file:///workspace/omo-backend/images/profile/");
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
