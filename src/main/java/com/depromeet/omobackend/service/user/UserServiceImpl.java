@@ -31,13 +31,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -50,10 +46,7 @@ public class UserServiceImpl implements UserService {
     @Value("${profile.upload.directory}")
     public String profileUploadPath;
 
-    public static final String MD_5 = "MD5";
-    public static final String UTF_8 = "UTF-8";
     public static final String CONTENT_TYPE = "Content-type";
-
     private final UserRepository userRepository;
     private final StampRepository stampRepository;
     private final AuthenticationUtil authenticationUtil;
@@ -66,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public UserSaveResponseDto saveAccount(UserSaveRequestDto requestDto, MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         String email = requestDto.getEmail();
-        String savedName = ImageUploadUtil.uploadFile(profileUploadPath, fileName, multipartFile.getBytes());
+        String savedName = ImageUploadUtil.uploadFile(email, profileUploadPath, fileName, multipartFile.getBytes());
 
         requestDto.setProfileUrl(savedName);
         userRepository.save(requestDto.toEntity());
@@ -160,7 +153,7 @@ public class UserServiceImpl implements UserService {
             entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } finally {
             in.close();
         }
@@ -186,18 +179,4 @@ public class UserServiceImpl implements UserService {
         else if (stampCount <= 19) return 4;
         else return 5;
     }
-
-    private String getHashingFileName(String email, String fileName) {
-        if (fileName == null) {
-            throw new IllegalArgumentException();
-        }
-        try {
-            MessageDigest md = MessageDigest.getInstance(MD_5);
-            md.update(email.getBytes(UTF_8), 0, email.length());
-            return new BigInteger(1, md.digest()).toString(16) + fileName;
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            return fileName;
-        }
-    }
-
 }
