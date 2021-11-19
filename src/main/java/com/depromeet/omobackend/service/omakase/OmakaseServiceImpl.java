@@ -55,6 +55,7 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .imageUrl(omakase.getPhotoUrl())
                 .name(omakase.getName())
                 .description(omakase.getDescription())
+                .level(omakase.getLevel().toString())
                 .address(omakase.getAddress())
                 .county(omakase.getCounty())
                 .phoneNumber(omakase.getPhoneNumber())

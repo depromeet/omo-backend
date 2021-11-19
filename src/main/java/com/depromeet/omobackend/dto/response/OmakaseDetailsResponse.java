@@ -31,6 +31,8 @@ public class OmakaseDetailsResponse {
 
     private String businessHours;
 
+    private String level;
+
     private Long recommendationCount;
 
 }
