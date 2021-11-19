@@ -17,21 +17,21 @@ public class ImageUploadUtil {
                                     byte[] fileData) throws IOException {
         Path uploadPath = Paths.get(profileUploadPath);
         if (!Files.exists(uploadPath)) {
-            log.debug("Files not exits {} : ", uploadPath);
+            log.info("Files not exits {} : ", uploadPath);
             Files.createDirectories(uploadPath);
-            log.debug("Files create Directories {} : ", uploadPath);
+            log.info("Files create Directories {} : ", uploadPath);
         }
         UUID uid = UUID.randomUUID();
         String savedName = uid + "_" + originalFilename;
         File target = new File(String.valueOf(uploadPath), savedName);
         FileCopyUtils.copy(fileData, target);
-        log.debug("Files {} copy : ", savedName);
+        log.info("Files {} copy : ", savedName);
         // 파일 권한 적용
         Runtime.getRuntime().exec("chmod -R 777 " + target);
         target.setExecutable(true, false);
         target.setReadable(true, false);
         target.setWritable(true, false);
-        log.debug("Files saved completed ");
+        log.info("Files saved completed ");
         return savedName;
     }
 }
