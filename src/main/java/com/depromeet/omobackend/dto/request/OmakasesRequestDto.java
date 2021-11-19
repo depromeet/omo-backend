@@ -10,7 +10,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OmakasesRequestDto {
+
     private Long omakaseId;
+
+    private String email;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiptIssuanceDate;

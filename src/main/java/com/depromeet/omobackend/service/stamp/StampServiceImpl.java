@@ -51,15 +51,16 @@ public class StampServiceImpl implements StampService {
 
     /**
      * 업로드한 레시피 영수증 파일 저장
+     * @param email
      * @param multipartFile
      * @return
      * @throws IOException
      */
     @Override
-    public String saveReceipt(MultipartFile multipartFile) throws IOException {
+    public String saveReceipt(String email, MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         String uploadDir = receiptUploadPath + fileName;
-        ImageUploadUtil.uploadFile(uploadDir, fileName, multipartFile.getBytes());
+        ImageUploadUtil.uploadFile(email, uploadDir, fileName, multipartFile.getBytes());
         return fileName;
     }
 

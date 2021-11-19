@@ -46,11 +46,15 @@ public class StampController {
     @PostMapping("/stamp")
     public ResponseEntity<String> saveStamp(OmakasesRequestDto omakasesRequestDto,
                                             @RequestParam("receiptImage") MultipartFile multipartFile) throws IOException {
+
+        String email = omakasesRequestDto.getEmail();
+        String saveFileName = stampService.saveReceipt(email, multipartFile);
+
         StampSaveRequestDto requestDto = new StampSaveRequestDto();
-        String saveFileName = stampService.saveReceipt(multipartFile);
         requestDto.setFileUrl(saveFileName);
 
         stampService.saveStamp(omakasesRequestDto.getOmakaseId(), omakasesRequestDto.getReceiptIssuanceDate(), requestDto);
+
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
 

@@ -18,10 +18,10 @@ public class ImageUploadUtil {
     public static final String MD_5 = "MD5";
     public static final String UTF_8 = "UTF-8";
 
-    public static String uploadFile(String email, String profileUploadPath, String originalFilename,
+    public static String uploadFile(String email, String imageUploadPath, String originalFilename,
                                     byte[] fileData) throws IOException {
 
-        Path uploadPath = Paths.get(profileUploadPath);
+        Path uploadPath = Paths.get(imageUploadPath);
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

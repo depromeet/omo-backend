@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public interface StampService {
     StampsCountResponseDto getStampCount();
-    String saveReceipt(MultipartFile receiptImageFile) throws IOException;
+    String saveReceipt(String email, MultipartFile receiptImageFile) throws IOException;
     Stamp saveStamp(Long omakaseId, LocalDate receiptIssuanceDate, StampSaveRequestDto requestDto);
     Long isCertifiedUpdate(Long id, StampUpdateRequestDto requestDto);
 }
