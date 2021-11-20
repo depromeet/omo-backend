@@ -34,7 +34,9 @@ public class OmakaseServiceImpl implements OmakaseService {
         authenticationUtil.getUser();
         List<OmakaseSearchResultDto> omakases;
 
-        if (level != null) omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), "%"+keyword+"%", page).stream()
+        keyword = "%"+keyword+"%";
+
+        if (level != null) omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), keyword, page).stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
         else omakases = omakaseRepository.findDistinctByNameLikeAndCountyLike(keyword, page).stream()
                 .map(this::omakaseSearchResult).collect(Collectors.toList());
