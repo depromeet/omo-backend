@@ -36,7 +36,8 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<RankingDto> getRankers(int limit) {
-        List<User> userList = rankingRepository.getRankers().subList(0, limit-1);
+        List<User> allUser = rankingRepository.getRankers();
+        List<User> userList = allUser.subList(0, Math.min(limit, allUser.size()) - 1);
         AtomicLong ranking = new AtomicLong(1);
         List<RankingDto> rankingDtoList = new LinkedList<>();
         for (User user : userList){

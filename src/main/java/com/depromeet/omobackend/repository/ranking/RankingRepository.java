@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RankingRepository extends CrudRepository<User, Long> {
-    @Query("select u from User u join Stamp s on s.isCertified = true group by u order by count(s) desc, u.lastStampDate desc, u.nickname asc")
+    @Query("select u from User u join Stamp s on s.isCertified = true group by u order by count(u) desc, u.lastStampDate desc, u.nickname asc")
     List<User> getRankers();
 
     @Query(value = "SELECT COUNT(*) FROM " +
