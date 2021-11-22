@@ -16,6 +16,7 @@ public interface UserService {
     void checkNicknameDuplicate(String nickname);
     void deleteAccount();
     void modifyNickname(String nickname);
+    void modifyProfile(MultipartFile multipartFile) throws IOException;
     void updateLastStampDate(LocalDate lastStampDate);
     UserInfoResponse getUserInfo(String email);
     MyOmakasesResponse getMyOmakases(String email);

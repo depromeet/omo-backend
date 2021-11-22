@@ -64,6 +64,11 @@ public class User {
         return this;
     }
 
+    public User modifyProfile(String profileUrl) {
+        this.profileUrl = profileUrl;
+        return this;
+    }
+
     public void isNotActivated() {
         this.isActivated = false;
     }
