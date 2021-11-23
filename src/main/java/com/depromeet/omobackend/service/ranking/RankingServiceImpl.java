@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -35,18 +36,32 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<RankingDto> getRankers(int limit) {
-        List<User> userList = rankingRepository.getRankers(PageRequest.of(0, limit));
+        List<User> userList = rankingRepository.getRankers(limit);
         AtomicLong ranking = new AtomicLong(1);
-        return (List<RankingDto>) userList.stream().map(user ->
-                RankingDto.builder()
-                    .ranking(ranking.getAndIncrement())
-                    .nickname(user.getNickname())
-                    .stampCount(stampRepository.findAllByUserAndIsCertifiedTrue(user).size())
-                    .profileUrl(user.getProfileUrl())
-                .build()
-        );
+        List<RankingDto> rankingDtoList = new LinkedList<>();
+        for (User user : userList){
+            Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
+            rankingDtoList.add(
+                    RankingDto.builder()
+                            .ranking(ranking.getAndIncrement())
+                            .nickname(user.getNickname())
+                            .stampCount(stampCount)
+                            .profileUrl(user.getProfileUrl())
+                            .email(user.getEmail())
+                            .power(getPower(stampCount))
+                            .build()
+            );
+        }
+        return rankingDtoList;
     }
 
+    private Integer getPower(Integer stampCount) {
+        if (stampCount < 2) return stampCount;
+        else if (stampCount <= 4) return 2;
+        else if (stampCount <= 9) return 3;
+        else if (stampCount <= 19) return 4;
+        else return 5;
+    }
 //    @Override
 //    public RankingInCountyDto getMyCountyRanking() {
 //        return null;

@@ -96,6 +96,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void modifyProfile(MultipartFile multipartFile) throws IOException {
+        User user = authenticationUtil.getUser();
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        String savedName = ImageUploadUtil.uploadFile(user.getEmail(), profileUploadPath, fileName, multipartFile.getBytes());
+        userRepository.save(user.modifyProfile(savedName));
+    }
+
+    @Override
     public void updateLastStampDate(LocalDate lastStampDate) {
         User user = authenticationUtil.getUser();
         LocalDate userCurrentStampDate = user.getLastStampDate();

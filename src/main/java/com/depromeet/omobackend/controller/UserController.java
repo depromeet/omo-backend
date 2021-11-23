@@ -61,7 +61,7 @@ public class UserController {
     }
 
     /**
-     * 회원 프로필 이미지 조회
+     * 프로필 이미지 조회
      * @return
      * @throws Exception
      */
@@ -71,6 +71,16 @@ public class UserController {
         return entity;
     }
 
+    /**
+     * 프로필 이미지 변경
+     * @param multipartFile
+     * @throws IOException
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/user/profile")
+    public void modifyProfileImage(@RequestParam("image") MultipartFile multipartFile) throws IOException {
+        userService.modifyProfile(multipartFile);
+    }
 
     /**
      * 회원 닉네임 중복 체크

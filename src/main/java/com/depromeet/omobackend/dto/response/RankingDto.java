@@ -14,4 +14,6 @@ public class RankingDto {
     private String nickname;
     private Integer stampCount;
     private String profileUrl;
+    private Integer power;
+    private String email;
 }
