@@ -2,12 +2,11 @@ package com.depromeet.omobackend.service.ranking;
 
 import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.RankingDto;
-import com.depromeet.omobackend.dto.response.RankingInCountyDto;
 import com.depromeet.omobackend.repository.ranking.RankingRepository;
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -17,6 +16,9 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequiredArgsConstructor
 @Service
 public class RankingServiceImpl implements RankingService {
+    @Value("${profile.upload.directory}")
+    public String profileUploadPath;
+
     private final AuthenticationUtil authenticationUtil;
     private final StampRepository stampRepository;
     private final RankingRepository rankingRepository;
@@ -46,7 +48,7 @@ public class RankingServiceImpl implements RankingService {
                             .ranking(ranking.getAndIncrement())
                             .nickname(user.getNickname())
                             .stampCount(stampCount)
-                            .profileUrl(user.getProfileUrl())
+                            .profileUrl(profileUploadPath + user.getProfileUrl())
                             .email(user.getEmail())
                             .power(getPower(stampCount))
                             .build()
