@@ -1,5 +1,6 @@
 package com.depromeet.omobackend.security.config;
 
+import com.depromeet.omobackend.exception.handler.AuthenticationEntryPointImpl;
 import com.depromeet.omobackend.security.jwt.JwtTokenProvider;
 import com.depromeet.omobackend.security.jwt.TokenFilter;
 import com.depromeet.omobackend.security.oauth.OAuth2SuccessHandler;
@@ -30,6 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -37,7 +40,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                 .formLogin().disable()
                 .cors()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint) //인가된 사용자인지 확인
+                .and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.GET, "test").permitAll()
                     .antMatchers(HttpMethod.GET, "/user/check/**").permitAll()

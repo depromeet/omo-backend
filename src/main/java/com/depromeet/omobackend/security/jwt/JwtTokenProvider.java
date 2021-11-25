@@ -1,12 +1,10 @@
 package com.depromeet.omobackend.security.jwt;
 
+import com.depromeet.omobackend.exception.ExpiredTokenException;
 import com.depromeet.omobackend.exception.InvalidTokenException;
 import com.depromeet.omobackend.exception.TokenTypeNotRefreshException;
 import com.depromeet.omobackend.security.auth.AuthDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,7 +62,10 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         try {
             String bearerToken = request.getHeader(HEADER);
-            if (bearerToken != null && bearerToken.startsWith(PREFIX) && validateToken(bearerToken.substring(7))) {
+            if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
+                if (!validateToken(bearerToken.substring(7))) {
+                    throw new ExpiredTokenException();
+                }
                 return bearerToken.substring(7);
             }
             return null;
