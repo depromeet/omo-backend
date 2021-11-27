@@ -24,4 +24,11 @@ public class RefreshToken {
     @TimeToLive
     private long refreshExp;
 
+    public RefreshToken update(String refreshToken, long refreshExp) {
+        this.refreshToken = refreshToken;
+        this.refreshExp = refreshExp;
+
+        return this;
+    }
+
 }
