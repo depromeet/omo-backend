@@ -13,9 +13,11 @@ import com.depromeet.omobackend.repository.recommendation.RecommendationReposito
 import com.depromeet.omobackend.repository.stamp.StampRepository;
 import com.depromeet.omobackend.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,18 +34,26 @@ public class OmakaseServiceImpl implements OmakaseService {
     @Override
     public OmakaseSearchResultResponse searchOmakases(Pageable page, String level, String keyword) {
         authenticationUtil.getUser();
-        List<OmakaseSearchResultDto> omakases;
+        Page<Omakase> omakases;
+        List<OmakaseSearchResultDto> omakaseList;
 
         keyword = "%"+keyword+"%";
 
-        if (level != null) omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), keyword, page).stream()
-                .map(this::omakaseSearchResult).collect(Collectors.toList());
-        else omakases = omakaseRepository.findDistinctByNameLikeAndCountyLike(keyword, page).stream()
-                .map(this::omakaseSearchResult).collect(Collectors.toList());
+        if (level != null) {
+            omakases = omakaseRepository.findDistinctByLevelAndNameLikeAndCountyLike(Level.valueOf(level), keyword, page);
+            omakaseList = omakases.getContent().stream()
+                    .map(this::omakaseSearchResult).collect(Collectors.toList());
+        }
+        else {
+            omakases = omakaseRepository.findDistinctByNameLikeAndCountyLike(keyword, page);
+            omakaseList = omakases.getContent().stream()
+                    .map(this::omakaseSearchResult).collect(Collectors.toList());
+        }
 
         return OmakaseSearchResultResponse.builder()
-                .omakases(omakases)
-                .totalElements(omakases.size())
+                .omakases(omakaseList)
+                .totalElements(omakases.getTotalElements())
+                .totalPages(omakases.getTotalPages())
                 .build();
     }
 

@@ -15,6 +15,8 @@ public class OmakaseSearchResultResponse {
 
     private List<OmakaseSearchResultDto> omakases;
 
-    private Integer totalElements;
+    private long totalElements;
+
+    private long totalPages;
 
 }
