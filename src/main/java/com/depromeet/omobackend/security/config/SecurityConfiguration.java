@@ -54,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .antMatchers("/login/oauth2/code/kakao").permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                     .antMatchers("/workspace/omo-backend/images/profile/**").permitAll()
+                    .antMatchers(HttpMethod.PATCH, "/auth").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
