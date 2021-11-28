@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface OmakaseService {
     OmakaseSearchResultResponse searchOmakases(Pageable page, String level, String keyword);
     OmakaseDetailsResponse getOmakaseDetail(long id);
+    void isCertificatedOmakase(long id);
 }

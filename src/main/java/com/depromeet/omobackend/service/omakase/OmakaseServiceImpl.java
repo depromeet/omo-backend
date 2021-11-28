@@ -7,6 +7,7 @@ import com.depromeet.omobackend.domain.user.User;
 import com.depromeet.omobackend.dto.response.OmakaseDetailsResponse;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultDto;
 import com.depromeet.omobackend.dto.response.OmakaseSearchResultResponse;
+import com.depromeet.omobackend.exception.AlreadyCertificatedOmakaseException;
 import com.depromeet.omobackend.exception.OmakaseNotFoundException;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
 import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +77,19 @@ public class OmakaseServiceImpl implements OmakaseService {
                 .recommendationCount(omakase.getRecommendationCount())
                 .isCertification(getCertification(user, omakase))
                 .build();
+    }
+
+    @Override
+    public void isCertificatedOmakase(long id) {
+        User user = authenticationUtil.getUser();
+
+        Omakase omakase = omakaseRepository.findById(id)
+                .orElseThrow(OmakaseNotFoundException::new);
+
+        stampRepository.findByUserAndOmakase(user, omakase)
+                .ifPresent(u -> {
+                    throw new AlreadyCertificatedOmakaseException();
+                });
     }
 
     private OmakaseSearchResultDto omakaseSearchResult(Omakase omakase) {

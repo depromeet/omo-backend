@@ -39,4 +39,9 @@ public class OmakaseController {
         return omakaseService.getOmakaseDetail(id);
     }
 
+    @GetMapping("/omakase/check")
+    public void isCertificatedOmakase(@RequestParam long id) {
+        omakaseService.isCertificatedOmakase(id);
+    }
+
 }
