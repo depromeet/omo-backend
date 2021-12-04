@@ -16,7 +16,8 @@ services:
       - MARIADB_PASSWORD=${DB_PASSWORD}
     container_name: mariadb
   spring:
-    image: devvhubb/omo:latest
+    #image: devvhubb/omo:latest
+    image: yunyoung18190/depromeet-omo-app:latest
     ports:
       - 8080:8080
     container_name: spring
@@ -35,7 +36,6 @@ services:
       - KAKAO_SECRET=${KAKAO_SECRET}
       - PROFILE_DIRECTORY=${PROFILE_DIRECTORY}
       - RECEIPT_DIRECTORY=${RECEIPT_DIRECTORY}
-      - BASE_URL=${BASE_URL}
     depends_on:
       - redis
       - mariadb
