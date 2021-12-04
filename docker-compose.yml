@@ -36,8 +36,6 @@ services:
       - PROFILE_DIRECTORY=${PROFILE_DIRECTORY}
       - RECEIPT_DIRECTORY=${RECEIPT_DIRECTORY}
       - BASE_URL=${BASE_URL}
-      - FRONT_HOME_URL=${FRONT_HOME_URL}
-      - FRONT_JOIN_URL=${FRONT_JOIN_URL}
     depends_on:
       - redis
       - mariadb
