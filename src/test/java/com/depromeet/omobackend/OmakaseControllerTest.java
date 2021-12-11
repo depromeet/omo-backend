@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class OmakaseControllerTest {
 
-    @Autowired
+    /*@Autowired
     private WebApplicationContext context;
 
     @Autowired
@@ -126,6 +126,6 @@ public class OmakaseControllerTest {
                         .build()
         );
         return omakase;
-    }
+    }*/
 
 }
