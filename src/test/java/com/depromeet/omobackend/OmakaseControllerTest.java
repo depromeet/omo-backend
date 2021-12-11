@@ -7,7 +7,6 @@ import com.depromeet.omobackend.domain.omakase.Omakase;
 import com.depromeet.omobackend.domain.recommendation.Recommendation;
 import com.depromeet.omobackend.domain.user.Role;
 import com.depromeet.omobackend.domain.user.User;
-import com.depromeet.omobackend.repository.location.LocationRepository;
 import com.depromeet.omobackend.repository.omakase.OmakaseRepository;
 import com.depromeet.omobackend.repository.recommendation.RecommendationRepository;
 import com.depromeet.omobackend.repository.user.UserRepository;
@@ -42,9 +41,6 @@ public class OmakaseControllerTest {
 
     @Autowired
     private OmakaseRepository omakaseRepository;
-
-    @Autowired
-    private LocationRepository locationRepository;
 
     @Autowired
     private RecommendationRepository recommendationRepository;
@@ -129,7 +125,6 @@ public class OmakaseControllerTest {
                         .level(Level.valueOf(level))
                         .build()
         );
-        locationRepository.save(omakase.getLocation());
         return omakase;
     }
 
