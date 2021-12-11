@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
                         .category(Category.SUSHI)
                         .county(request.getCounty())
                         .description(request.getDescription())
-                        .holiday(Holiday.valueOf(request.getHoliday()))
+                        .holiday(request.getHoliday() != null ? Holiday.valueOf(request.getHoliday()) : null)
                         .level(Level.valueOf(request.getLevel()))
                         .name(request.getName())
                         .phoneNumber(request.getPhoneNumber())

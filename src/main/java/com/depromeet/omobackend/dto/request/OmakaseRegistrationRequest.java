@@ -23,7 +23,6 @@ public class OmakaseRegistrationRequest {
     @NotBlank
     private String description;
 
-    @NotBlank
     private String holiday;
 
     @NotBlank
