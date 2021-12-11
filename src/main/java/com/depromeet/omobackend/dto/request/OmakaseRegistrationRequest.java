@@ -1,41 +1,41 @@
 package com.depromeet.omobackend.dto.request;
 
-import com.depromeet.omobackend.domain.omakase.Holiday;
-import com.depromeet.omobackend.domain.omakase.Level;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class OmakaseRegistrationRequest {
 
     @NotBlank
-    private final String address;
+    private String address;
 
     @NotBlank
-    private final String businessHours;
+    private String businessHours;
 
     @NotBlank
-    private final String county;
+    private String county;
 
     @NotBlank
-    private final String description;
+    private String description;
 
     @NotBlank
-    private final Holiday holiday;
+    private String holiday;
 
     @NotBlank
-    private final Level level;
+    private String level;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @NotBlank
-    private final String phoneNumber;
+    private String phoneNumber;
 
     @NotBlank
-    private final String priceInformation;
+    private String priceInformation;
 
 }
