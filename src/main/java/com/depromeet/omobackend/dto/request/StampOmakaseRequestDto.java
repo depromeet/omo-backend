@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OmakasesRequestDto {
+public class StampOmakaseRequestDto {
 
     private Long omakaseId;
 

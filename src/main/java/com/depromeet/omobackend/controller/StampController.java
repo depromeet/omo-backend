@@ -1,6 +1,6 @@
 package com.depromeet.omobackend.controller;
 
-import com.depromeet.omobackend.dto.request.OmakasesRequestDto;
+import com.depromeet.omobackend.dto.request.StampOmakaseRequestDto;
 import com.depromeet.omobackend.dto.request.StampSaveRequestDto;
 import com.depromeet.omobackend.dto.response.StampsCountResponseDto;
 import com.depromeet.omobackend.service.stamp.StampService;
@@ -44,7 +44,7 @@ public class StampController {
      * @throws IOException
      */
     @PostMapping("/stamp")
-    public ResponseEntity<String> saveStamp(OmakasesRequestDto omakasesRequestDto,
+    public ResponseEntity<String> saveStamp(StampOmakaseRequestDto omakasesRequestDto,
                                             @RequestParam("receiptImage") MultipartFile multipartFile) throws IOException {
 
         String saveFileName = stampService.saveReceipt(multipartFile);
