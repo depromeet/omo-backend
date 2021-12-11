@@ -17,7 +17,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void registrationOmakase(OmakaseRegistrationRequest request, MultipartFile file) {
-        String photoUrl = ImageUploadUtil.uploadOmakaseImage(file);
+        String photoUrl = file != null ? ImageUploadUtil.uploadOmakaseImage(file) : null;
 
         omakaseRepository.save(
                 Omakase.builder()
