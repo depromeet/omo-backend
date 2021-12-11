@@ -4,6 +4,7 @@ import com.depromeet.omobackend.exception.FileIsEmptyException;
 import com.depromeet.omobackend.exception.FileUploadFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,13 +19,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+@Component
 @Slf4j
 public class ImageUploadUtil {
     public static final String MD_5 = "MD5";
     public static final String UTF_8 = "UTF-8";
 
-    @Value("omakase.image.directory")
-    private static String omakaseDirectory;
+    @Value("${omakase.image.directory}")
+    private String omakaseDirectory;
 
     public static String uploadFile(String email, String imageUploadPath, String originalFilename,
                                     byte[] fileData) throws IOException {
@@ -46,7 +48,7 @@ public class ImageUploadUtil {
         return savedName;
     }
 
-    public static String uploadOmakaseImage(MultipartFile file) {
+    public String uploadOmakaseImage(MultipartFile file) {
         if(file == null || file.isEmpty() || file.getOriginalFilename() == null) {
             throw new FileIsEmptyException();
         }
@@ -55,12 +57,10 @@ public class ImageUploadUtil {
         String fileName = omakaseDirectory + "/" + UUID.randomUUID() + extension;
 
         try {
-            File target = (File) file;
-            byte[] fileData = file.getBytes();
-            FileCopyUtils.copy(fileData, target);
-            log.debug("Files {} copy : ", fileName);
-            setFilePermission(target);
-        } catch(IOException e) {
+            File temporaryFile = new File(UUID.randomUUID() + extension);
+            file.transferTo(temporaryFile);
+        } catch (IOException e) {
+            e.printStackTrace();
             throw new FileUploadFailedException();
         }
 

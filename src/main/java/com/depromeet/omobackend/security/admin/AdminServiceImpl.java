@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminServiceImpl implements AdminService {
 
     private final OmakaseRepository omakaseRepository;
+    private final ImageUploadUtil imageUploadUtil;
 
     @Override
     public long registrationOmakase(OmakaseRegistrationRequest request) {
@@ -41,7 +42,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     @Override
     public void registrationOmakase(Long id, MultipartFile file) {
-        String photoUrl = file != null ? ImageUploadUtil.uploadOmakaseImage(file) : null;
+        String photoUrl = file != null ? imageUploadUtil.uploadOmakaseImage(file) : null;
         Omakase omakase = omakaseRepository.findById(id)
                 .orElseThrow(OmakaseNotFoundException::new);
         omakase.updatePhotoUrl(photoUrl);
