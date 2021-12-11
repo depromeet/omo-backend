@@ -32,9 +32,13 @@ public class AdminController {
     }
 
     @PostMapping("/registration/omakase")
-    public void registrationOmakase(@RequestBody @Valid OmakaseRegistrationRequest request,
-                                    @RequestParam("file") MultipartFile file) {
-        adminService.registrationOmakase(request, file);
+    public long registrationOmakase(@RequestBody @Valid OmakaseRegistrationRequest request) {
+        return adminService.registrationOmakase(request);
+    }
+
+    @PatchMapping("/registration/omakase/{id}")
+    public void registrationOmakase(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        adminService.registrationOmakase(id, file);
     }
 
 }

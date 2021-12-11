@@ -56,6 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .antMatchers("/workspace/omo-backend/images/profile/**").permitAll()
                     .antMatchers(HttpMethod.PATCH, "/auth").permitAll()
                     .antMatchers(HttpMethod.POST, "/registration/omakase").permitAll()
+                    .antMatchers(HttpMethod.PATCH, "/registration/omakase").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
