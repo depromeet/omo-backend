@@ -36,6 +36,7 @@ services:
       - KAKAO_SECRET=${KAKAO_SECRET}
       - PROFILE_DIRECTORY=${PROFILE_DIRECTORY}
       - RECEIPT_DIRECTORY=${RECEIPT_DIRECTORY}
+      - OMAKASE_IMAGE_DIRECTORY=${OMAKASE_IMAGE_DIRECTORY}
     depends_on:
       - redis
       - mariadb
