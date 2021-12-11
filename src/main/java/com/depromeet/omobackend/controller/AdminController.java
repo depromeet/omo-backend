@@ -1,9 +1,14 @@
 package com.depromeet.omobackend.controller;
 
+import com.depromeet.omobackend.dto.request.OmakaseRegistrationRequest;
 import com.depromeet.omobackend.dto.request.StampUpdateRequestDto;
+import com.depromeet.omobackend.security.admin.AdminService;
 import com.depromeet.omobackend.service.stamp.StampService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 /**
  * 관리자 페이지
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final StampService stampService;
+    private final AdminService adminService;
 
     /**
      * 관리자 도장 인증 수락
@@ -24,4 +30,11 @@ public class AdminController {
     public Long update(@PathVariable Long id, @RequestBody StampUpdateRequestDto requestDto) {
         return stampService.isCertifiedUpdate(id, requestDto);
     }
+
+    @PostMapping("/registration/omakase")
+    public void registrationOmakase(@RequestBody @Valid OmakaseRegistrationRequest request,
+                                    @RequestParam("file") MultipartFile file) {
+        adminService.registrationOmakase(request, file);
+    }
+
 }
