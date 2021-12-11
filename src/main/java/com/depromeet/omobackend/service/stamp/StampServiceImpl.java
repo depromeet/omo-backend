@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -41,12 +42,11 @@ public class StampServiceImpl implements StampService {
     public StampsCountResponseDto getStampCount() {
         User user = authenticationUtil.getUser();
         Integer stampCount = stampRepository.findAllByUserAndIsCertifiedTrue(user).size();
-        StampsCountResponseDto stampsCountResponseDto = StampsCountResponseDto.builder()
+        return StampsCountResponseDto.builder()
                 .nickname(user.getNickname())
                 .profileUrl(user.getProfileUrl())
                 .stampCount(stampCount)
                 .build();
-        return stampsCountResponseDto;
     }
 
     /**
@@ -59,7 +59,7 @@ public class StampServiceImpl implements StampService {
     public String saveReceipt(MultipartFile multipartFile) throws IOException {
         User user = authenticationUtil.getUser();
         String email = user.getEmail();
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         String uploadDir = receiptUploadPath + fileName;
         ImageUploadUtil.uploadFile(email, uploadDir, fileName, multipartFile.getBytes());
         return fileName;
