@@ -16,7 +16,6 @@ services:
       - MARIADB_PASSWORD=${DB_PASSWORD}
     container_name: mariadb
   spring:
-    #image: devvhubb/omo:latest
     image: yunyoung18190/depromeet-omo-app:latest
     ports:
       - 8080:8080
@@ -30,6 +29,7 @@ services:
       - JWT_REFRESH_EXP=${JWT_REFRESH_EXP}
       - BASE_URL=${BASE_URL}
       - BASE_PORT=${BASE_PORT}
+      - BASE_DOMAIN=${BASE_DOMAIN}
       - NAVER_ID=${NAVER_ID}
       - NAVER_SECRET=${NAVER_SECRET}
       - KAKAO_ID=${KAKAO_ID}
@@ -37,6 +37,8 @@ services:
       - PROFILE_DIRECTORY=${PROFILE_DIRECTORY}
       - RECEIPT_DIRECTORY=${RECEIPT_DIRECTORY}
       - OMAKASE_IMAGE_DIRECTORY=${OMAKASE_IMAGE_DIRECTORY}
+      - FRONT_REDIRECT_HOME_URL=${PRONT_REDIRECT_HOME_URL}
+      - FRONT_REDIRECT_JOIN_URL=${PRONT_REDIRECT_JOIN_URL}
     depends_on:
       - redis
       - mariadb
