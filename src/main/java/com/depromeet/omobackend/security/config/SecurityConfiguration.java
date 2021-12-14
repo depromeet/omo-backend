@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .antMatchers("/login/oauth2/code/naver").permitAll()
                     .antMatchers("/login/oauth2/code/kakao").permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-                    .antMatchers("/workspace/omo-backend/images/profile/**").permitAll()
+                    .antMatchers("/workspace/omo-backend/images/**").permitAll()
                     .antMatchers(HttpMethod.PATCH, "/auth").permitAll()
                     .antMatchers(HttpMethod.POST, "/registration/omakase").permitAll()
                     .antMatchers(HttpMethod.PATCH, "/registration/omakase/**").permitAll()
@@ -73,6 +73,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/workspace/omo-backend/images/profile/**")
                 .addResourceLocations("file:///workspace/omo-backend/images/profile/");
+        registry.addResourceHandler("/workspace/omo-backend/images/omakases/**")
+                .addResourceLocations("file:///workspace/omo-backend/images/omakases/");
     }
 
     @Bean
