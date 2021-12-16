@@ -1,7 +1,6 @@
 package com.depromeet.omobackend.repository.ranking;
 
 import com.depromeet.omobackend.domain.user.User;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RankingRepository extends CrudRepository<User, Long> {
-    @Query(value = "select u.* from user u join stamp s on u.id = s.user_id and s.is_certified = true group by u.id order by count(u.id), u.last_stamp_date, u.nickname asc limit ?1"
+    @Query(value = "select u.* from user u join stamp s on u.id = s.user_id and s.is_certified = true group by u.id order by count(u.id), u.last_stamp_date, u.nickname desc limit ?1"
     , nativeQuery = true
     )
     List<User> getRankers(Integer limit);
