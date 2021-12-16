@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,18 +54,27 @@ public class ImageUploadUtil {
             throw new FileIsEmptyException();
         }
 
-        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        String fileName = omakaseDirectory + "/" + UUID.randomUUID() + extension;
+        String uploadDir;
 
         try {
-            File temporaryFile = new File(UUID.randomUUID() + extension);
-            file.transferTo(temporaryFile);
+            String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = UUID.randomUUID() + extension;
+
+            uploadDir = URI.create(omakaseDirectory) + "/" + fileName;
+            Files.createDirectories(Path.of(uploadDir));
+
+            byte[] imageBytes = file.getBytes();
+
+            File saveFile = new File(omakaseDirectory, fileName);
+            FileCopyUtils.copy(imageBytes, saveFile);
+
+            setFilePermission(saveFile);
         } catch (IOException e) {
             e.printStackTrace();
             throw new FileUploadFailedException();
         }
 
-        return fileName;
+        return uploadDir;
     }
 
     private static void setFilePermission(File target) throws IOException {
