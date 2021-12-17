@@ -58,6 +58,12 @@ public class ImageUploadUtil {
         String uploadDir = omakaseDirectory + "/" + fileName;
 
         try {
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+                log.info("Files create Omakase Upload Directories {} : ", uploadPath);
+            }
             byte[] fileData = file.getBytes();
 
             File saveFile = new File(uploadDir);
