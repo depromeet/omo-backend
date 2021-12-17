@@ -53,23 +53,18 @@ public class ImageUploadUtil {
             throw new FileIsEmptyException();
         }
 
-        String uploadDir;
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String fileName = UUID.randomUUID() + extension;
+        String uploadDir = omakaseDirectory + "/" + fileName;
 
         try {
-            String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String fileName = UUID.randomUUID() + extension;
-            uploadDir = omakaseDirectory + "/" + fileName;
+            byte[] fileData = file.getBytes();
 
-            Path uploadPath = Paths.get(uploadDir);
-
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-                log.debug("Files create Directories {} : ", uploadDir);
-            }
-
-            File saveFile = new File(omakaseDirectory, fileName);
-            file.transferTo(saveFile);
+            File saveFile = new File(uploadDir);
+            FileCopyUtils.copy(fileData, saveFile);
             System.out.println("saved path : " + saveFile.getPath());
+
+            setFilePermission(saveFile);
         } catch (IOException e) {
             e.printStackTrace();
             throw new FileUploadFailedException();
