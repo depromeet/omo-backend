@@ -60,9 +60,9 @@ public class ImageUploadUtil {
             String fileName = UUID.randomUUID() + extension;
             uploadDir = omakaseDirectory + "/" + fileName;
 
-            file.transferTo(new File(uploadDir));
-            log.debug("file org name = {}", file.getOriginalFilename());
-            log.debug("file content type = {}", file.getContentType());
+            File saveFile = new File(omakaseDirectory, fileName);
+            file.transferTo(saveFile);
+            System.out.println("saved path : " + saveFile.getPath());
         } catch (IOException e) {
             e.printStackTrace();
             throw new FileUploadFailedException();
