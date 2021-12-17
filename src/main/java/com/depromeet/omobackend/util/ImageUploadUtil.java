@@ -60,6 +60,13 @@ public class ImageUploadUtil {
             String fileName = UUID.randomUUID() + extension;
             uploadDir = omakaseDirectory + "/" + fileName;
 
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+                log.debug("Files create Directories {} : ", uploadDir);
+            }
+
             File saveFile = new File(omakaseDirectory, fileName);
             file.transferTo(saveFile);
             System.out.println("saved path : " + saveFile.getPath());
