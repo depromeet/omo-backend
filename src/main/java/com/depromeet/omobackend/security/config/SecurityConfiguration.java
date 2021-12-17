@@ -74,6 +74,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/workspace/omo-backend/images/profile/**")
                 .addResourceLocations("file:///workspace/omo-backend/images/profile/");
+        registry.addResourceHandler("/workspace/omo-backend/images/omakases/**")
+                .addResourceLocations("file:///workspace/omo-backend/images/omakases/");
     }
 
     @Bean
