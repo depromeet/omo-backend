@@ -55,7 +55,7 @@ public class ImageUploadUtil {
 
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String fileName = UUID.randomUUID() + extension;
-        String uploadDir = omakaseDirectory + "/" + fileName;
+        String uploadDir = omakaseDirectory + "/";
 
         try {
             Path uploadPath = Paths.get(uploadDir);
@@ -66,7 +66,7 @@ public class ImageUploadUtil {
             }
             byte[] fileData = file.getBytes();
 
-            File saveFile = new File(uploadDir);
+            File saveFile = new File(uploadDir, fileName);
             FileCopyUtils.copy(fileData, saveFile);
             System.out.println("saved path : " + saveFile.getPath());
 
