@@ -76,7 +76,7 @@ public class ImageUploadUtil {
             throw new FileUploadFailedException();
         }
 
-        return uploadDir;
+        return uploadDir + fileName;
     }
 
     private static void setFilePermission(File target) throws IOException {
