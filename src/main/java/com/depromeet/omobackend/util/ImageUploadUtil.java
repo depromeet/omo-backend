@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,16 +58,11 @@ public class ImageUploadUtil {
         try {
             String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             String fileName = UUID.randomUUID() + extension;
+            uploadDir = omakaseDirectory + "/" + fileName;
 
-            uploadDir = URI.create(omakaseDirectory) + "/" + fileName;
-            Files.createDirectories(Path.of(uploadDir));
-
-            byte[] imageBytes = file.getBytes();
-
-            File saveFile = new File(omakaseDirectory, fileName);
-            FileCopyUtils.copy(imageBytes, saveFile);
-
-            setFilePermission(saveFile);
+            file.transferTo(new File(uploadDir));
+            log.debug("file org name = {}", file.getOriginalFilename());
+            log.debug("file content type = {}", file.getContentType());
         } catch (IOException e) {
             e.printStackTrace();
             throw new FileUploadFailedException();
